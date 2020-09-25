@@ -4,6 +4,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
+from helpers import format_resp
 
 app = Flask(__name__)
 CORS(app)
@@ -40,14 +41,8 @@ def login():
 @app.route('/check', methods=['GET'])
 def check():
     resultproxy = db.session.execute('SELECT * FROM users')
-    d, a = {}, []
-    for rowproxy in resultproxy:
-        # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
-        for column, value in rowproxy.items():
-            # build up the dictionary
-            d = {**d, **{column: value}}
-        a.append(d)
-    return jsonify(a)
+    response = format_resp(resultproxy)
+    return jsonify(response[0])
 
 
 app.run(debug=True)
