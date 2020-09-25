@@ -11,6 +11,7 @@ passlib = "*"
 flask-session = "*"
 requests = "*"
 flask-cors = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.8"
