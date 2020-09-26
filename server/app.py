@@ -32,20 +32,28 @@ def register():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-
     # Forget any user_id
     session.clear()
+    details= request.get_json()
+    
 
-    # if request.method == 'POST':
-        
+    if request.method == "POST":
+        resultproxy = db.session.execute('SELECT * FROM users WHERE username = :username',{'username': details['username']})
+        response = format_resp(resultproxy)
 
-    return jsonify("login")
+        if len(response) == 0:
+            return jsonify('user does not exist')
+        else:
+            return jsonify('Found')
+              
+    else:
+        return jsonify("login GET route")
 
 @app.route('/check', methods=['GET'])
 def check():
     resultproxy = db.session.execute('SELECT * FROM users')
     response = format_resp(resultproxy)
-    return jsonify(response[0])
+    return jsonify(response)
 
 
 app.run(debug=True)
