@@ -3,7 +3,6 @@ from flask_cors import CORS
 from flask_session import Session
 from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as sha256
-from passlib.hash import cisco_type7 as cisco
 from flask_sqlalchemy import SQLAlchemy
 from helpers import format_resp, login_required
 from dotenv import load_dotenv
