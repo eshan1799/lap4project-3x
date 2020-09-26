@@ -52,10 +52,12 @@ def login():
     else:
         return jsonify("login GET route")
 
+### TEST/DEBUG ROUTES
+
 @app.route('/check', methods=['GET'])
 @login_required
 def check():
-    resultproxy = db.session.execute('SELECT * FROM users')
+    resultproxy = db.session.execute('SELECT * FROM users where id = :id', {'id':session.get("id")})
     response = format_resp(resultproxy)
     return jsonify(response)
 
