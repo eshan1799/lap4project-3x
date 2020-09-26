@@ -4,7 +4,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
-from helpers import format_resp
+from helpers import format_resp, login_required
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -53,6 +53,7 @@ def login():
         return jsonify("login GET route")
 
 @app.route('/check', methods=['GET'])
+@login_required
 def check():
     resultproxy = db.session.execute('SELECT * FROM users')
     response = format_resp(resultproxy)
@@ -62,4 +63,15 @@ def check():
 def add():
     session["id"] = 1
     return jsonify("Test ID 1 set")
+
+@app.route('/clear')
+def clear():
+    session.clear()
+    return jsonify("Test ID cleared")
+
+@app.route('/denied')
+def denied():
+    return jsonify("Access Denied")
+
 app.run(debug=True)
+
