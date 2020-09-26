@@ -42,10 +42,12 @@ def login():
         response = format_resp(resultproxy)
 
         if len(response) == 0:
-            return jsonify('user does not exist')
+            return jsonify('User Does Not Exist')
         else:
-            return jsonify('Found')
-              
+            if (pw.verify(details['password'], response[0]['hash'])):
+                return jsonify("User Login Successful")
+            else:
+                return jsonify("User Found, Password Incorrect")
     else:
         return jsonify("login GET route")
 
