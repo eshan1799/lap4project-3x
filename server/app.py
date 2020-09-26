@@ -14,7 +14,7 @@ CORS(app)
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -26,9 +26,9 @@ db = SQLAlchemy(app)
 def running():
     return jsonify('Flask Server Running')
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET','POST'])
 def register():
-    return jsonify('register')
+    return jsonify(session.get("id"))
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -45,7 +45,8 @@ def login():
             return jsonify('User Does Not Exist')
         else:
             if (pw.verify(details['password'], response[0]['hash'])):
-                return jsonify("User Login Successful")
+                session["id"] = response[0]["id"]
+                return jsonify(session.get("id"))
             else:
                 return jsonify("User Found, Password Incorrect")
     else:
@@ -57,5 +58,8 @@ def check():
     response = format_resp(resultproxy)
     return jsonify(response)
 
-
+@app.route('/token', methods=['GET'])
+def add():
+    session["id"] = 1
+    return jsonify("Test ID 1 set")
 app.run(debug=True)
