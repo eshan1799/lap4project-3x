@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from flask_session import Session
 from tempfile import mkdtemp
-from passlib.hash import pbkdf2_sha256 as pw
+from passlib.hash import pbkdf2_sha256 as sha256
+from passlib.hash import cisco_type7 as cisco
 from flask_sqlalchemy import SQLAlchemy
 from helpers import format_resp, login_required
 from dotenv import load_dotenv
@@ -44,7 +45,7 @@ def login():
         if len(response) == 0:
             return jsonify('User Does Not Exist')
         else:
-            if (pw.verify(details['password'], response[0]['hash'])):
+            if (sha256.verify(details['password'], response[0]['hash'])):
                 session["id"] = response[0]["id"]
                 return jsonify(session.get("id"))
             else:
