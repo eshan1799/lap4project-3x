@@ -29,6 +29,18 @@ def running():
 @app.route('/register', methods=['POST'])
 def register():
     details = request.get_json()
+
+    resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1', {'1': details['username']})
+    response = format_resp(resultproxy)
+    if (len(response) == 1):
+        return jsonify("Username Taken")
+    
+
+    resultproxy = db.session.execute('SELECT * FROM users WHERE email = :1', {'1': details['email']})
+    response = format_resp(resultproxy)
+    if (len(response) == 1):
+        return jsonify("Email Already Registered to Account")
+
     hash_pw = pw.hash(details['password'])
     resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING id', {'1': details['username'], '2':hash_pw, '3':details['email']})
     db.session.commit()
@@ -39,7 +51,7 @@ def register():
 def login():
     session.clear()
     details= request.get_json()
-    resultproxy = db.session.execute('SELECT * FROM users WHERE username = :username',{'username': details['username']})
+    resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
     db.session.flush()
     response = format_resp(resultproxy)
 
@@ -53,13 +65,16 @@ def login():
             return jsonify("User Found, Password Incorrect")
  
 
-### TEST/DEBUG ROUTES
+
+'''NOTE: ADD 405 Route Redirect!!!'''
+
+
+'''TEST/DEBUG ROUTES'''
 
 @app.route('/check', methods=['GET'])
 @login_required
 def check():
-    # resultproxy = db.session.execute('SELECT * FROM users where id = :id', {'id': session.get("id")})
-    resultproxy = db.session.execute('SELECT * FROM users')
+    resultproxy = db.session.execute('SELECT * FROM users where id = :1', {'1': session.get("id")})
     response = format_resp(resultproxy)
     return jsonify(response)
 
@@ -79,4 +94,3 @@ def denied():
 
 app.run(debug=True)
 
-##ADD 405 Route Redirect
