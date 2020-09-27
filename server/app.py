@@ -28,13 +28,19 @@ def running():
 
 @app.route('/register', methods=['POST'])
 def register():
-    return jsonify(session.get("id"))
+    details = request.get_json()
+    hash_pw = pw.hash(details['password'])
+    resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING id', {'1': details['username'], '2':hash_pw, '3':details['email']})
+    db.session.commit()
+    response = format_resp(resultproxy)
+    return jsonify(response)
 
 @app.route('/login', methods=['POST'])
 def login():
     session.clear()
     details= request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :username',{'username': details['username']})
+    db.session.flush()
     response = format_resp(resultproxy)
 
     if len(response) == 0:
@@ -52,7 +58,8 @@ def login():
 @app.route('/check', methods=['GET'])
 @login_required
 def check():
-    resultproxy = db.session.execute('SELECT * FROM users where id = :id', {'id':session.get("id")})
+    # resultproxy = db.session.execute('SELECT * FROM users where id = :id', {'id': session.get("id")})
+    resultproxy = db.session.execute('SELECT * FROM users')
     response = format_resp(resultproxy)
     return jsonify(response)
 
