@@ -52,7 +52,6 @@ def login():
     session.clear()
     details= request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
-    db.session.flush()
     response = format_resp(resultproxy)
 
     if len(response) == 0:
