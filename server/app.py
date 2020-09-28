@@ -124,6 +124,19 @@ def history():
     response = format_resp(result_proxy)
     return jsonify(response)
 
+@app.route('/compare_auth', methods=['GET'])
+@login_required
+def compare_auth():
+    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
+    total_breakdown = format_resp(total_breakdown)
+    stock_breakdown = db.session.execute('SELECT ')
+
+@app.route('/compare_unauth', methods=['GET'])
+def compare_unauth():
+    result_proxy = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
+    response = format_resp(result_proxy)
+    return jsonify(response)
+
 @app.route('/reset', methods=['PATCH'])
 # @login_required
 def reset():
