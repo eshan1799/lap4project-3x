@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session, Response
+from flask import Flask, jsonify,json, request, session, Response, make_response
 from flask_cors import CORS
 from flask_session import Session
 from tempfile import mkdtemp
@@ -33,7 +33,7 @@ def register():
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1', {'1': details['username']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return Response(jsonify("Username Taken"), status=500, mimetype='application/json')
+        return Response(json.dumps("Username Taken"), status=401, mimetype='application/json')
     
 
     resultproxy = db.session.execute('SELECT * FROM users WHERE email = :1', {'1': details['email']})
@@ -74,12 +74,15 @@ def logout():
 @login_required
 def portfolio():
     balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': session.get("id")})
+    # balance = db.session.execute('SELECT balance FROM balance WHERE id = 1')
     balance_val = format_resp(balance)
     balance_round = round(balance_val[0]['balance'],2)
     equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': session.get('id')})
+    # equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = 1')
     equity_val = format_resp(equity)
     equity_round = round(equity_val[0]['sum'], 2)
     stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': session.get("id")})
+    # stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = 1')
     stock_list = format_resp(stocks)
     portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
     return jsonify(portfolio)
@@ -219,7 +222,10 @@ def check():
 @app.route('/token', methods=['GET'])
 def add():
     session["id"] = 1
-    return jsonify("Test ID 1 set")
+
+    id_cookie = make_response("Set cookie")
+    id_cookie.set_cookie('id', '1', max_age=60*60)
+    return id_cookie
 
 @app.route('/clear')
 def clear():

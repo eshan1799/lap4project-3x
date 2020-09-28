@@ -53,19 +53,26 @@ export const logIn = (details) => {
                 method: 'POST',
                 body: JSON.stringify(details)
             }
-            const username = await fetch(`${url}/login`, options)
-            console.log(username)
-            dispatch(addUsername(username))
-        } catch (err) {
-            console.warn(err.message)
+            // fetch(`${url}/login`, options)
+            //     .then(r => r.json())
+            //     .then(data => dispatch(getPortfolio()))
+            //     // .then(getPortfolio())
+            const response = await fetch(`${url}/login`, options)
+            console.log(response)
+            dispatch(getPortfolio())
+            } catch (err) {
+                console.warn(err.message)
+            
         }
     }
-
 }
+
 export const getPortfolio = () => {
     return async dispatch => {
         try {
-            const portfolio = await fetch(`${url}/portfolio`)
+            const response = await fetch(`${url}/portfolio`)
+            const portfolio = await response.json()
+            console.log(portfolio)
             dispatch(addPortfolio(portfolio))
         } catch (err) {
             console.warn(err.message)

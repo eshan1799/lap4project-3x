@@ -27,6 +27,7 @@ class App extends React.Component {
           <input type='password' name="password" onChange={ this.handleInput }></input>
           <input type='submit'></input>
         </form>
+        <h1>id:{sessionStorage.getItem('id')}</h1>
       </>
     );
   }
