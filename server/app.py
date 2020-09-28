@@ -62,6 +62,12 @@ def login():
             return jsonify(session.get("id"))
         else:
             return jsonify("User Found, Password Incorrect")
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return jsonify("Logged Out")
+    
 '''NOTE: ADD 405 Route Redirect!!!'''
 
 @app.route('/portfolio', methods=['GET'])
@@ -150,8 +156,24 @@ def compare_auth():
             stock_total += stock['position']
         for stock in user_list:
             stock['position'] = stock['position']/stock_total
-    # for user in total
-    return jsonify (stock_grouped)
+    
+    auth_compare=[]
+    for user in total_breakdown:
+        total_object = {
+            'stock': user['stock'],
+            'balance': user['balance']
+        }
+
+        compare_object = {
+            'id': user['id'],
+            'username': user['username'],
+            'total_breakdown': total_object,
+            'stock_breakdown': stock_grouped[user['id']]
+        }
+
+        auth_compare.append(compare_object)
+
+    return jsonify(auth_compare)
 
 @app.route('/compare_unauth', methods=['GET'])
 def compare_unauth():
