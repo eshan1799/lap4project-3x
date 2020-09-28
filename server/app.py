@@ -127,9 +127,26 @@ def history():
 @app.route('/compare_auth', methods=['GET'])
 @login_required
 def compare_auth():
-    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
+    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':session.get("id")})
     total_breakdown = format_resp(total_breakdown)
-    stock_breakdown = db.session.execute('SELECT ')
+
+    stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':session.get("id")})
+    stock_breakdown = format_resp(stock_breakdown)
+    stock_grouped = {}
+    for stock in stock_breakdown:
+        if stock['user_id'] in stock_grouped:
+            stock_grouped[stock['user_id']].append(stock)
+        else:
+            stock_grouped[stock['user_id']]=[stock]
+
+    for user_id in stock_grouped:
+        user_list = stock_grouped[user_id]
+        stock_total = 0
+        for stock in user_list:
+            stock_total += stock['position']
+        for stock in user_list:
+            stock['position'] = stock['position']/stock_total
+    return jsonify (stock_grouped)
 
 @app.route('/compare_unauth', methods=['GET'])
 def compare_unauth():
