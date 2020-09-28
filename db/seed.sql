@@ -38,15 +38,31 @@ CREATE TABLE history (
 );
 
 INSERT INTO users (username, hash, email)
-VALUES ('testuser', '$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0', 'user@test.com');
+VALUES 
+('user1', '$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0', 'user1@test.com'),
+('user2','$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0','user2@test.com')
+;
 
 INSERT INTO balance (user_id, balance)
-VALUES (1, 10000);
+VALUES 
+(1, 10000),
+(2, 5000)
+;
 
 INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price)
-VALUES (1, 'AAPL', 'Apple, Inc.', 'NASDAQ', 10, 110.25);
+VALUES 
+(1, 'AAPL', 'Apple, Inc.', 'NASDAQ', 10, 110.25),
+(2,'ACET','Adicet Bio Inc', 'NASDAQ', 6, 50.50),
+(1, 'ACCO', 'ACCO Brands Corporation', 'NYSE', 12, 75),
+(2,'ACBI', 'Atlantic Capital Bancshares Inc', 'NASDAQ', 5, 30)
+;
 
 INSERT INTO history (user_id, ticker, action, shares, price)
-VALUES (1, 'AAPL', 'buy', 10, 110.25);
+VALUES 
+(1, 'AAPL', 'buy', 10, 110.25),
+(2,'ACET', 'buy', 6, 50.50),
+(1,'ACCO','buy',12,75),
+(2,'ACBI','buy',5,30)
+;
 
     
