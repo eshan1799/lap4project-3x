@@ -70,9 +70,12 @@ def portfolio():
     balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': session.get("id")})
     balance_val = format_resp(balance)
     balance_round = round(balance_val[0]['balance'],2)
+    equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': session.get('id')})
+    equity_val = format_resp(equity)
+    equity_round = round(equity_val[0]['sum'], 2)
     stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': session.get("id")})
     stock_list = format_resp(stocks)
-    portfolio = {'balance': balance_round, 'stocks': stock_list}
+    portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
     return jsonify(portfolio)
 
 @app.route('/buy', methods=['POST', 'PATCH'])
