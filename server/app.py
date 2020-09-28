@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, Response
 from flask_cors import CORS
 from flask_session import Session
 from tempfile import mkdtemp
@@ -33,7 +33,7 @@ def register():
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1', {'1': details['username']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return jsonify("Username Taken")
+        return Response(jsonify("Username Taken"), status=500, mimetype='application/json')
     
 
     resultproxy = db.session.execute('SELECT * FROM users WHERE email = :1', {'1': details['email']})
@@ -229,4 +229,3 @@ def clear():
 
 
 app.run(debug=True)
-

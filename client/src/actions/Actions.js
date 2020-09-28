@@ -54,6 +54,7 @@ export const logIn = (details) => {
                 body: JSON.stringify(details)
             }
             const username = await fetch(`${url}/login`, options)
+            console.log(username)
             dispatch(addUsername(username))
         } catch (err) {
             console.warn(err.message)
