@@ -129,7 +129,11 @@ def history():
 def compare_auth():
     total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':session.get("id")})
     total_breakdown = format_resp(total_breakdown)
-
+    for user in total_breakdown:
+        portfolio_total = user['balance']+user['stock']
+        user['balance'] = user['balance']/portfolio_total
+        user['stock'] = user['stock']/portfolio_total
+    
     stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':session.get("id")})
     stock_breakdown = format_resp(stock_breakdown)
     stock_grouped = {}
@@ -146,6 +150,7 @@ def compare_auth():
             stock_total += stock['position']
         for stock in user_list:
             stock['position'] = stock['position']/stock_total
+    # for user in total
     return jsonify (stock_grouped)
 
 @app.route('/compare_unauth', methods=['GET'])
