@@ -53,7 +53,6 @@ export const logIn = (details) => {
                 method: 'POST',
                 body: JSON.stringify(details)
             }
-
             const username = await fetch(`${url}/login`, options)
             dispatch(addUsername(username))
         } catch (err) {

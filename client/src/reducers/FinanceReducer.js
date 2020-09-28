@@ -24,6 +24,8 @@ const FinanceReducer = (state = initState, action) => {
             return { ...state, historicPrices: action.payload}
         case 'ADD_COMPARISON':
             return { ...state, comparison: action.payload }
+        default:
+            return state; 
     }
 }
 

@@ -1,5 +1,6 @@
 from functools import wraps
 from flask import redirect, request, session
+
 def format_resp(resultproxy):
     d, a = {}, []
     for rowproxy in resultproxy:
