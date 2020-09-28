@@ -50,7 +50,7 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     session.clear()
-    details= request.get_json()
+    details = request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
     response = format_resp(resultproxy)
 
@@ -76,9 +76,12 @@ def portfolio():
     balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': session.get("id")})
     balance_val = format_resp(balance)
     balance_round = round(balance_val[0]['balance'],2)
+    equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': session.get('id')})
+    equity_val = format_resp(equity)
+    equity_round = round(equity_val[0]['sum'], 2)
     stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': session.get("id")})
     stock_list = format_resp(stocks)
-    portfolio = {'balance': balance_round, 'stocks': stock_list}
+    portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
     return jsonify(portfolio)
 
 @app.route('/buy', methods=['POST', 'PATCH'])
@@ -135,6 +138,7 @@ def history():
 def compare_auth():
     total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':session.get("id")})
     total_breakdown = format_resp(total_breakdown)
+
     for user in total_breakdown:
         portfolio_total = user['balance']+user['stock']
         user['balance'] = user['balance']/portfolio_total
@@ -174,6 +178,7 @@ def compare_auth():
         auth_compare.append(compare_object)
 
     return jsonify(auth_compare)
+
 
 @app.route('/compare_unauth', methods=['GET'])
 def compare_unauth():
