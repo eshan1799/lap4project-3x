@@ -56,7 +56,7 @@ VALUES
 (1, 'AAPL', 'Apple, Inc.', 'NASDAQ', 10, 110.25),
 (2,'ACET','Adicet Bio Inc', 'NASDAQ', 6, 50.50),
 (1, 'ACCO', 'ACCO Brands Corporation', 'NYSE', 12, 75),
-(2,'ACBI', 'Atlantic Capital Bancshares Inc', 'NASDAQ', 5, 30)
+(2,'ACBI', 'Atlantic Capital Bancshares Inc', 'NASDAQ', 5, 30),
 (3,'MSFT', 'Microsoft Corporation','NASDAQ', 100, 50),
 (3,'TSLA', 'Tesla Inc','NASDAQ',2,45.3)
 ;
