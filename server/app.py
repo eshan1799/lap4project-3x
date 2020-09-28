@@ -62,6 +62,12 @@ def login():
             return jsonify(session.get("id"))
         else:
             return jsonify("User Found, Password Incorrect")
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return jsonify("Logged Out")
+    
 '''NOTE: ADD 405 Route Redirect!!!'''
 
 @app.route('/portfolio', methods=['GET'])
@@ -130,14 +136,61 @@ def history():
 @app.route('/compare_auth', methods=['GET'])
 @login_required
 def compare_auth():
-    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
+    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':session.get("id")})
     total_breakdown = format_resp(total_breakdown)
+
+    for user in total_breakdown:
+        portfolio_total = user['balance']+user['stock']
+        user['balance'] = user['balance']/portfolio_total
+        user['stock'] = user['stock']/portfolio_total
+    
+    stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':session.get("id")})
+    stock_breakdown = format_resp(stock_breakdown)
+    stock_grouped = {}
+    for stock in stock_breakdown:
+        if stock['user_id'] in stock_grouped:
+            stock_grouped[stock['user_id']].append(stock)
+        else:
+            stock_grouped[stock['user_id']]=[stock]
+
+    for user_id in stock_grouped:
+        user_list = stock_grouped[user_id]
+        stock_total = 0
+        for stock in user_list:
+            stock_total += stock['position']
+        for stock in user_list:
+            stock['position'] = stock['position']/stock_total
+    
+    auth_compare=[]
+    for user in total_breakdown:
+        total_object = {
+            'stock': user['stock'],
+            'balance': user['balance']
+        }
+
+        compare_object = {
+            'id': user['id'],
+            'username': user['username'],
+            'total_breakdown': total_object,
+            'stock_breakdown': stock_grouped[user['id']]
+        }
+
+        auth_compare.append(compare_object)
+
+    return jsonify(auth_compare)
+
 
 @app.route('/compare_unauth', methods=['GET'])
 def compare_unauth():
     result_proxy = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
     response = format_resp(result_proxy)
-    return jsonify(response)
+    ratio_list = []
+    for user in response:
+        balance_ratio = user['balance'] / (user['balance'] + user['stock'])
+        stock_ratio = user['stock'] / (user['balance'] + user['stock'])
+        user_dict = {'username': user['username'], 'balance':balance_ratio, 'stock':stock_ratio}
+        ratio_list.append(user_dict)
+    return jsonify(ratio_list)
 
 @app.route('/reset', methods=['PATCH'])
 # @login_required

@@ -40,13 +40,15 @@ CREATE TABLE history (
 INSERT INTO users (username, hash, email)
 VALUES 
 ('user1', '$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0', 'user1@test.com'),
-('user2','$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0','user2@test.com')
+('user2','$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0','user2@test.com'),
+('user3','$pbkdf2-sha256$29000$NuZ8730PYUwJoRTi/B.jVA$DTvAfa3HLFh8dpgzGQO7yKN7ZciSM/HL5kQr7w6VYY0','user3@test.com')
 ;
 
 INSERT INTO balance (user_id, balance)
 VALUES 
 (1, 10000),
-(2, 5000)
+(2, 5000),
+(3, 7654)
 ;
 
 INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price)
@@ -54,7 +56,9 @@ VALUES
 (1, 'AAPL', 'Apple, Inc.', 'NASDAQ', 10, 110.25),
 (2,'ACET','Adicet Bio Inc', 'NASDAQ', 6, 50.50),
 (1, 'ACCO', 'ACCO Brands Corporation', 'NYSE', 12, 75),
-(2,'ACBI', 'Atlantic Capital Bancshares Inc', 'NASDAQ', 5, 30)
+(2,'ACBI', 'Atlantic Capital Bancshares Inc', 'NASDAQ', 5, 30),
+(3,'MSFT', 'Microsoft Corporation','NASDAQ', 100, 50),
+(3,'TSLA', 'Tesla Inc','NASDAQ',2,45.3)
 ;
 
 INSERT INTO history (user_id, ticker, action, shares, price)
@@ -62,7 +66,9 @@ VALUES
 (1, 'AAPL', 'buy', 10, 110.25),
 (2,'ACET', 'buy', 6, 50.50),
 (1,'ACCO','buy',12,75),
-(2,'ACBI','buy',5,30)
+(2,'ACBI','buy',5,30),
+(3,'MSFT','buy',100,50),
+(3,'TSLA','buy',2,45.3)
 ;
 
     
