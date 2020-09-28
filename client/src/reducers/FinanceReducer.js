@@ -6,13 +6,13 @@ const initState = {
     portfolio: [],
     history: [],  
     searchResult: {},
-    historicPrices: {}
+    historicPrices: {},
     comparison: {}
 }
 
 const FinanceReducer = (state = initState, action) => {
     switch(action.type) {
-        case 'LOG_IN':
+        case 'ADD_USERNAME':
             return { ...state, username: action.payload }
         case 'ADD_PORTFOLIO':
             return { ...state, cash: action.payload.cash, equity: action.payload.equity, balance: (action.payload.cash + action.payload.equity), portfolio: action.payload.portfolio }
@@ -26,3 +26,5 @@ const FinanceReducer = (state = initState, action) => {
             return { ...state, comparison: action.payload }
     }
 }
+
+export default FinanceReducer;

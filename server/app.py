@@ -50,7 +50,7 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     session.clear()
-    details= request.get_json()
+    details = request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
     response = format_resp(resultproxy)
 

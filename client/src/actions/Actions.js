@@ -1,5 +1,7 @@
-const logIn = username => ({
-    type: 'LOG_IN',
+const url = 'http://localhost:5000'
+
+const addUsername = username => ({
+    type: 'ADD_USERNAME',
     payload: username
 })
 
@@ -28,10 +30,41 @@ const addComparison = comparison => ({
     payload: comparison
 })
 
+export const registerUser = (details) => {
+    try {
+        options = {
+            headers: { 'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify(details)
+        }
+        fetch(`${url}/register`, options)
+
+    } catch (err) {
+        console.warn(err.message)
+    }
+}
+
+export const logIn = (details) => {
+    return async dispatch => {
+        try {
+            options = {
+                headers: { 'Content-Type': 'application/json'},
+                method: 'POST',
+                body: JSON.stringify(details)
+            }
+
+            const username = await fetch(`${url}/login`, options)
+            dispatch(addUsername(username))
+        } catch (err) {
+            console.warn(err.message)
+        }
+    }
+
+}
 export const getPortfolio = () => {
     return async dispatch => {
         try {
-            const portfolio = await fetch('http://localhost:5000/portfolio')
+            const portfolio = await fetch(`${url}/portfolio`)
             dispatch(addPortfolio(portfolio))
         } catch (err) {
             console.warn(err.message)
@@ -41,7 +74,7 @@ export const getPortfolio = () => {
 export const getHistory = () => {
     return async dispatch => {
         try {
-            const history = await fetch('http://localhost:5000/history')
+            const history = await fetch(`${url}/history`)
             dispatch(addHistory(history))
         } catch (err) {
             console.warn(err.message)
@@ -74,7 +107,7 @@ export const getHistoricPrices = (ticker, range = '1y', token) => {
 export const getAuthComparison = () => {
     return async dispatch => {
         try {
-            const comparison = await fetch(`http://localhost:5000/compare_auth`)
+            const comparison = await fetch(`${url}/compare_auth`)
             dispatch(addComparison(comparison))
         } catch (err) {
             console.warn(err.message)
@@ -85,7 +118,7 @@ export const getAuthComparison = () => {
 export const getUnAuthComparison = () => {
     return async dispatch => {
         try {
-            const comparison = await fetch(`http://localhost:5000/compare_unauth`)
+            const comparison = await fetch(`${url}/compare_unauth`)
             dispatch(addComparison(comparison))
         } catch (err) {
             console.warn(err.message)
