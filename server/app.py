@@ -135,7 +135,13 @@ def compare_auth():
 def compare_unauth():
     result_proxy = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
     response = format_resp(result_proxy)
-    return jsonify(response)
+    ratio_list = []
+    for user in response:
+        balance_ratio = user['balance'] / (user['balance'] + user['stock'])
+        stock_ratio = user['stock'] / (user['balance'] + user['stock'])
+        user_dict = {'username': user['username'], 'balance':balance_ratio, 'stock':stock_ratio}
+        ratio_list.append(user_dict)
+    return jsonify(ratio_list)
 
 @app.route('/reset', methods=['PATCH'])
 # @login_required
