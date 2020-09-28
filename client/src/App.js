@@ -1,9 +1,10 @@
 import React from "react";
 import "./styles/App.css";
-import { logIn } from '/actions/Actions';
+import { logIn } from './actions/Actions';
+import { connect } from 'react-redux';
 
 class App extends React.Component {
-  state = {};
+  state = {details: {}};
 
   handleSubmit = e => {
     e.preventDefault()

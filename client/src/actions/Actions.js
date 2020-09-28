@@ -1,4 +1,5 @@
 const url = 'http://localhost:5000'
+import 'regenerator-runtime/runtime'
 
 const addUsername = username => ({
     type: 'ADD_USERNAME',
@@ -47,7 +48,7 @@ export const registerUser = (details) => {
 export const logIn = (details) => {
     return async dispatch => {
         try {
-            options = {
+            const options = {
                 headers: { 'Content-Type': 'application/json'},
                 method: 'POST',
                 body: JSON.stringify(details)

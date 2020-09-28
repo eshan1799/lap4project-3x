@@ -132,7 +132,6 @@ def history():
 def compare_auth():
     total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id')
     total_breakdown = format_resp(total_breakdown)
-    stock_breakdown = db.session.execute('SELECT ')
 
 @app.route('/compare_unauth', methods=['GET'])
 def compare_unauth():
