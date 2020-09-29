@@ -1,6 +1,10 @@
-from flask import Flask, jsonify,json, request, session, Response
+from flask import Flask, jsonify,json, request, session
 from flask_cors import CORS
 from flask_session import Session
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
@@ -13,9 +17,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+# app.config["SESSION_FILE_DIR"] = mkdtemp()
+# app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_TYPE"] = "filesystem"
+app.config["SECRET_KEY"] = "secret"
 Session(app)
 
 
@@ -33,13 +38,13 @@ def register():
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1', {'1': details['username']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return Response(json.dumps("Username Taken"), status=401, mimetype='application/json')
+        return jsonify("Username Taken"),401
     
 
     resultproxy = db.session.execute('SELECT * FROM users WHERE email = :1', {'1': details['email']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return jsonify("Email Already Registered to Account")
+        return jsonify("Email Already Registered to Account"),400
 
     hash_pw = pw.hash(details['password'])
     resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING id', {'1': details['username'], '2':hash_pw, '3':details['email']})
@@ -49,7 +54,7 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    session.clear()
+    # session.clear()
     details = request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
     response = format_resp(resultproxy)
@@ -58,7 +63,9 @@ def login():
         return jsonify('User Does Not Exist')
     else:
         if (pw.verify(details['password'], response[0]['hash'])):
-            session["id"] = response[0]["id"]
+            # session["id"] = response[0]["id"]
+
+
             return jsonify(session.get("id"))
         else:
             return jsonify("User Found, Password Incorrect")
