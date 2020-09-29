@@ -16,7 +16,7 @@ class Dashboard extends React.Component {
                 <NavLink to='/dashboard/authpreviewothers'>Compare</NavLink>
             </nav>
             <h1>Hello, { this.props.username }!</h1>
-            <h2>Cash: ${ this.props.cash } Equity: ${ this.props.equity } Balance: ${ this.props.equity }</h2>
+            <h2>Cash: ${ this.props.cash } Equity: ${ this.props.equity } Balance: ${ this.props.balance }</h2>
             <Switch>
                 <Route path='/dashboard/portfolio' component={ Portfolio } />
                 <Route path='/dashboard/search' component={ Search } />
