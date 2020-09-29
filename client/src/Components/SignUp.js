@@ -1,5 +1,5 @@
 import React from 'react'
-import connect from 'react-redux'
+import { connect } from 'react-redux'
 import { registerUser } from '../actions/Actions'
 
 class SignUp extends React.Component {
@@ -21,11 +21,11 @@ class SignUp extends React.Component {
             <>
             <h2>Register</h2>
             <form onSubmit={ this.handleSubmit }>
-                <label for='username'>Username</label>
+                <label htmlFor='username'>Username</label>
                 <input type='text' name="username" onChange={ this.handleInput } ></input>
-                <label for='password'>Password</label>
+                <label htmlFor='password'>Password</label>
                 <input type='password' name="password" onChange={ this.handleInput }></input>
-                <label for='email'>Email</label>
+                <label htmlFor='email'>Email</label>
                 <input type='email' name='email' onchange={ this.handleInput}></input>
                 <input type='submit'></input>
             </form>

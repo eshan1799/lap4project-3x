@@ -77,6 +77,7 @@ export const getPortfolio = () => {
         }
     }
 }
+
 export const getHistory = () => {
     return async dispatch => {
         try {
