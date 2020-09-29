@@ -58,6 +58,7 @@ export const logIn = (details) => {
           if (data.token) {
             // console.log(data.token);
             localStorage.setItem("user", data.token);
+            // dispatch(addUsername(username))
             dispatch(getPortfolio());
           } else {
             console.log(data);
@@ -105,6 +106,50 @@ export const getHistory = () => {
     }
   };
 };
+
+export const newShare = (order) => {
+    try {
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(order)
+        }
+    } catch (err) {
+        console.warn(err.message)
+    }
+}
+
+export const updateShares = (order) => {
+    try {
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify(order)
+        }
+    } catch(err) {
+        console.warn(err.message)
+    }
+}
+
+export const sellShare = (order) => {
+    try {
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify(order)
+        }
+        
+    } catch(err) {
+        console.warn(err.message)
+    }
+
+}
 
 export const getSearch = (ticker, token) => {
   return async (dispatch) => {
