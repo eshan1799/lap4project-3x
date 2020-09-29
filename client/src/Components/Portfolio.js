@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Stock } from './index/index'
 
 class Portfolio extends React.Component {
@@ -8,13 +8,7 @@ class Portfolio extends React.Component {
     renderStocks = portfolio => {
         return portfolio.map((stock, index) => (
             <div key={ index }>
-                <Link to={{
-                        pathname:'/dashboard/trade',
-                        stock:{ 
-                            stock:stock.ticker
-                        }
-                    }}><Stock stock={ stock } />
-                </Link>
+                <Stock stock={ stock }/>
             </div>
         ))
     }

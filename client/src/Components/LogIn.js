@@ -7,7 +7,7 @@ import { logIn } from '../actions/Actions'
 class LogIn extends React.Component {
     state = {
         details: {},
-        logOn: false
+        // logOn: false
     }
 
     handleSubmit = e => {
@@ -24,7 +24,7 @@ class LogIn extends React.Component {
 
     render() {
 
-        if(this.state.logOn == true) {
+        if(localStorage.getItem("user")) {
             return <Redirect to="/dashboard"/>
         }
 
@@ -37,7 +37,7 @@ class LogIn extends React.Component {
             <h2>Login</h2>
             <form onSubmit={ this.handleSubmit }>
                 <label htmlFor='username'>Username</label>
-                <input type='text' name="username" onChange={ this.handleInput }></input>
+                <input type='text' name="username" onChange={ this.handleInput } autoFocus></input>
                 <label htmlFor='password'>Password</label>
                 <input type='password' name="password" onChange={ this.handleInput }></input>
                 <input type='submit'></input>
