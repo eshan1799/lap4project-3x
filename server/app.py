@@ -8,7 +8,7 @@ from flask_jwt_extended import (
 from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
-from helpers import format_resp, login_required
+from helpers import format_resp
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -16,11 +16,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Configure session to use filesystem (instead of signed cookies)
-# app.config["SESSION_FILE_DIR"] = mkdtemp()
-# app.config["SESSION_PERMANENT"] = False
-# app.config["SESSION_TYPE"] = "filesystem"
-app.config["SECRET_KEY"] = "secret"
+app.config["SECRET_KEY"] = os.getenv("SECRET")
 jwt = JWTManager(app)
 Session(app)
 
