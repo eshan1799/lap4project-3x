@@ -1,4 +1,4 @@
-from flask import Flask, jsonify,json, request, session, Response, make_response
+from flask import Flask, jsonify,json, request, session, Response
 from flask_cors import CORS
 from flask_session import Session
 from tempfile import mkdtemp
@@ -110,17 +110,10 @@ def buy():
     
 
 @app.route('/sell', methods=['PATCH'])
-# @login_required
+@login_required
 def sell():
     session["id"] = 1
     sell_order = request.get_json()
-
-    # if request.method == 'POST':
-    #     db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5', {'1': session.get('id'), '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], 5: sell_order['price']})
-    #     db.session.execute('INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price) VALUES (:1, :2, :3, :4, :5, :6', {'1': session.get('id'), '2': sell_order['ticker'], '3': sell_order['name'], '4': sell_order['exchange'], '5': sell_order['shares'], '6': sell_order['price']})
-    #     db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (sell_order['shares'] * sell_order['price']), '2': session.get('id')})
-    #     db.session.commit()
-    #     return jsonify(200)
 
     if request.method == 'PATCH':
         db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': session.get('id'), '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], '5': sell_order['price']})
@@ -222,15 +215,12 @@ def check():
 @app.route('/token', methods=['GET'])
 def add():
     session["id"] = 1
-
-    id_cookie = make_response("Set cookie")
-    id_cookie.set_cookie('id', '1', max_age=60*60)
-    return id_cookie
+    return jsonify ("Test Token set")
 
 @app.route('/clear')
 def clear():
     session.clear()
-    return jsonify("Test ID cleared")
+    return jsonify("Test Token cleared")
 
 
 
