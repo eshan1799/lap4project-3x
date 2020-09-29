@@ -21,6 +21,7 @@ CORS(app)
 # app.config["SESSION_PERMANENT"] = False
 # app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = "secret"
+jwt = JWTManager(app)
 Session(app)
 
 
@@ -64,9 +65,9 @@ def login():
     else:
         if (pw.verify(details['password'], response[0]['hash'])):
             # session["id"] = response[0]["id"]
+            access_token = create_access_token(identity=response[0]["id"],expires_delta=False)
 
-
-            return jsonify(session.get("id"))
+            return jsonify(access_token),200
         else:
             return jsonify("User Found, Password Incorrect")
 
