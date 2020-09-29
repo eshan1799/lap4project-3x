@@ -1,6 +1,6 @@
 import React from 'react';
 
-class AuthPreviewOthers extends React.Component() {
+class AuthPreviewOthers extends React.Component {
     render() {
         return(
             <>

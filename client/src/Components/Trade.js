@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Trade extends React.Component() {
+class Trade extends React.Component {
     render() {
         return(
             <>

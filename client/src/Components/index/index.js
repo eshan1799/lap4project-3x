@@ -1,6 +1,6 @@
-import LogIn from '../LogIn';
+export { default as LogIn } from '../LogIn';
 import SignUp from '../SignUp';
-import UnAuthPreviewOthers from '../UnAuthPreviewOthers';
+// import UnAuthPreviewOthers from '../UnAuthPreviewOthers';
 
 import Portfolio from '../Portfolio';
 import Search from '../Search';

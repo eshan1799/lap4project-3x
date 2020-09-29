@@ -3,7 +3,7 @@ import connect from 'react-redux'
 import { logIn } from '../actions/Actions'
 
 
-class LogIn extends React.Component() {
+class LogIn extends React.Component {
     state = {}
 
     handleSubmit = e => {

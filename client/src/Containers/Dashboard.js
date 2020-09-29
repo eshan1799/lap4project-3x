@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink, Switch, Route } from "react-router-dom"
 
-class Dashboard extends React.Component() {
+class Dashboard extends React.Component {
     render() {
         return (
             <>

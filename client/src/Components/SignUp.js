@@ -2,7 +2,7 @@ import React from 'react'
 import connect from 'react-redux'
 import { registerUser } from '../actions/Actions'
 
-class SignUp extends React.Component() {
+class SignUp extends React.Component {
     state = {}
 
     handleSubmit = e => {
@@ -38,4 +38,4 @@ const mDTP = dispatch => ({
     signUp: (details) => dispatch(registerUser(details))
 })
 
-export default connect(null, mDTP)(LogIn)
+export default connect(null, mDTP)(SignUp)
