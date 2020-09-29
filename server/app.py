@@ -28,6 +28,7 @@ db = SQLAlchemy(app)
 def running():
     return jsonify('Flask Server Running')
 
+
 @app.route('/register', methods=['POST'])
 def register():
     details = request.get_json()
@@ -44,10 +45,13 @@ def register():
         return jsonify("Email Already Registered to Account"),401
 
     hash_pw = pw.hash(details['password'])
-    resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING username', {'1': details['username'], '2':hash_pw, '3':details['email']})
-    db.session.commit()
+    resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING username, id', {'1': details['username'], '2':hash_pw, '3':details['email']})
     response = format_resp(resultproxy)
+    db.session.execute('INSERT INTO balance (user_id,balance) VALUES (:1, 10000)',{'1':response[0]['id']})
+    db.session.commit()
+    
     return jsonify(response[0]['username'])
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -64,8 +68,6 @@ def login():
         else:
             return jsonify("Password Incorrect"), 401
 
-    
-'''NOTE: ADD 405 Route Redirect!!!'''
 
 @app.route('/portfolio', methods=['GET'])
 @jwt_required
@@ -76,9 +78,13 @@ def portfolio():
     balance_round = round(balance_val[0]['balance'],2)
     equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': user_id})
     equity_val = format_resp(equity)
-    equity_round = round(equity_val[0]['sum'], 2)
-    stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': user_id})
-    stock_list = format_resp(stocks)
+    if len(equity_val) > 0:
+        equity_round = round(equity_val[0]['sum'], 2)
+        stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': user_id})
+        stock_list = format_resp(stocks)
+    else:
+        equity_round = 0
+        stock_list = []
     portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
     return jsonify(portfolio),200
 
