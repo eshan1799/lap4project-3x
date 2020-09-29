@@ -41,13 +41,13 @@ def register():
     resultproxy = db.session.execute('SELECT * FROM users WHERE email = :1', {'1': details['email']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return jsonify("Email Already Registered to Account"),400
+        return jsonify("Email Already Registered to Account"),401
 
     hash_pw = pw.hash(details['password'])
-    resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING id', {'1': details['username'], '2':hash_pw, '3':details['email']})
+    resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING username', {'1': details['username'], '2':hash_pw, '3':details['email']})
     db.session.commit()
     response = format_resp(resultproxy)
-    return jsonify(response)
+    return jsonify(response[0]['username'])
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -62,17 +62,12 @@ def login():
             token = create_access_token(identity=response[0]["id"],expires_delta=False)
             return jsonify(token = token),200
         else:
-            return jsonify("User Found, Password Incorrect"), 401
+            return jsonify("Password Incorrect"), 401
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return jsonify("Logged Out")
     
 '''NOTE: ADD 405 Route Redirect!!!'''
 
 @app.route('/portfolio', methods=['GET'])
-# @login_required
 @jwt_required
 def portfolio():
     user_id = get_jwt_identity()
@@ -88,49 +83,49 @@ def portfolio():
     return jsonify(portfolio),200
 
 @app.route('/buy', methods=['POST', 'PATCH'])
-# @login_required
+@jwt_required
 def buy():
-    session["id"] = 1
+    user_id = get_jwt_identity()
     buy_order = request.get_json()
     
     if request.method == 'POST':
-        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': session.get('id'), '2': buy_order['ticker'], '3': 'buy', '4': buy_order['shares'], '5': buy_order['price']})
-        db.session.execute('INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price) VALUES (:1, :2, :3, :4, :5, :6)', {'1': session.get('id'), '2': buy_order['ticker'], '3': buy_order['name'], '4': buy_order['exchange'], '5': buy_order['shares'], '6': buy_order['price']})
-        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (buy_order['shares'] * buy_order['price']), '2': session.get('id')})
+        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': buy_order['ticker'], '3': 'buy', '4': buy_order['shares'], '5': buy_order['price']})
+        db.session.execute('INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price) VALUES (:1, :2, :3, :4, :5, :6)', {'1': user_id, '2': buy_order['ticker'], '3': buy_order['name'], '4': buy_order['exchange'], '5': buy_order['shares'], '6': buy_order['price']})
+        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (buy_order['shares'] * buy_order['price']), '2': user_id})
         db.session.commit()
-        return jsonify (200)
+        return jsonify ('Transaction Complete: Buy '+buy_order['ticker'])
     
     if request.method == 'PATCH':
-        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': session.get('id'), '2': buy_order['ticker'], '3': 'buy', '4': buy_order['shares'], '5': buy_order['price']})
-        db.session.execute('UPDATE portfolio SET shares = shares + :1,  price = :2 WHERE user_id = :3 AND ticker = :4', {'1': buy_order['shares'],'2': buy_order['price'], '3': session.get('id'), '4': buy_order['ticker']})
-        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (buy_order['shares'] * buy_order['price']), '2': session.get('id')})
+        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': buy_order['ticker'], '3': 'buy', '4': buy_order['shares'], '5': buy_order['price']})
+        db.session.execute('UPDATE portfolio SET shares = shares + :1,  price = :2 WHERE user_id = :3 AND ticker = :4', {'1': buy_order['shares'],'2': buy_order['price'], '3': user_id, '4': buy_order['ticker']})
+        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (buy_order['shares'] * buy_order['price']), '2': user_id})
         db.session.commit()
-        return jsonify(200)
+        return jsonify('Transaction Complete: Buy '+buy_order['ticker'])
 
     
 
 @app.route('/sell', methods=['PATCH'])
-@login_required
+@jwt_required
 def sell():
-    session["id"] = 1
+    user_id = get_jwt_identity()
     sell_order = request.get_json()
 
-    if request.method == 'PATCH':
-        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': session.get('id'), '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], '5': sell_order['price']})
-        db.session.execute('UPDATE portfolio SET shares = shares - :1, price = :2 WHERE user_id = :3 AND ticker = :4', {'1': sell_order['shares'], '2': sell_order['price'], '3': session.get('id'), '4': sell_order['ticker']})
-        db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (sell_order['shares'] * sell_order['price']), '2': session.get('id')})
-        db.session.commit()
-        return jsonify(200)
+    # if request.method == 'PATCH':
+    db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], '5': sell_order['price']})
+    db.session.execute('UPDATE portfolio SET shares = shares - :1, price = :2 WHERE user_id = :3 AND ticker = :4', {'1': sell_order['shares'], '2': sell_order['price'], '3': user_id, '4': sell_order['ticker']})
+    db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (sell_order['shares'] * sell_order['price']), '2': user_id})
+    db.session.commit()
+    return jsonify('Transaction Complete: Sell '+sell_order['ticker'])
 
 @app.route('/history', methods=['GET'])
-@login_required
+@jwt_required
 def history():
-    result_proxy = db.session.execute('SELECT * FROM history WHERE user_id = :1', {'1': session.get('id')})
+    user_id = get_jwt_identity()
+    result_proxy = db.session.execute('SELECT * FROM history WHERE user_id = :1', {'1': user_id})
     response = format_resp(result_proxy)
     return jsonify(response)
 
 @app.route('/compare_auth', methods=['GET'])
-# @login_required
 @jwt_required
 def compare_auth():
     user_id = get_jwt_identity()
@@ -191,39 +186,13 @@ def compare_unauth():
     return jsonify(ratio_list)
 
 @app.route('/reset', methods=['PATCH'])
-# @login_required
+@jwt_required
 def reset():
-    session['id'] = 1
-    db.session.execute('UPDATE balance SET balance = :1 WHERE user_id = :2', {'1': 10000, '2': session.get('id')})
-    db.session.execute('DELETE FROM portfolio WHERE user_id = :1', {'1': session.get('id')})
-    db.session.execute('DELETE FROM history WHERE user_id = :1', {'1': session.get('id')})
+    user_id = get_jwt_identity()
+    db.session.execute('UPDATE balance SET balance = :1 WHERE user_id = :2', {'1': 10000, '2': user_id})
+    db.session.execute('DELETE FROM portfolio WHERE user_id = :1', {'1': user_id})
+    db.session.execute('DELETE FROM history WHERE user_id = :1', {'1': user_id})
     db.session.commit()
-    return jsonify(200)
-
-@app.route('/denied')
-def denied():
-    return jsonify("Access Denied")
-
-
-'''TEST/DEBUG ROUTES'''
-
-@app.route('/check', methods=['GET'])
-@login_required
-def check():
-    resultproxy = db.session.execute('SELECT * FROM users where id = :1', {'1': session.get("id")})
-    response = format_resp(resultproxy)
-    return jsonify(response)
-
-@app.route('/token', methods=['GET'])
-def add():
-    session["id"] = 1
-    return jsonify ("Test Token set")
-
-@app.route('/clear')
-def clear():
-    session.clear()
-    return jsonify("Test Token cleared")
-
-
+    return jsonify('Account Reset')
 
 app.run(debug=True)
