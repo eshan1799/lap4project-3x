@@ -1,4 +1,6 @@
 const url = "http://localhost:5000";
+const token = 'pk_805248909bc94205989d68559f04fcb3'
+
 import "regenerator-runtime/runtime";
 
 const addUsername = (username) => ({
@@ -151,12 +153,13 @@ export const sellShare = (order) => {
 
 }
 
-export const getSearch = (ticker, token) => {
+export const getSearch = (ticker) => {
   return async (dispatch) => {
     try {
-      const searchResult = await fetch(
+      const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${token}`
       );
+      const searchResult = await response.json()
       dispatch(addSearch(searchResult));
     } catch (err) {
       console.warn(err.message);
