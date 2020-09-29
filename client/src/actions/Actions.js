@@ -33,6 +33,10 @@ const addComparison = (comparison) => ({
   payload: comparison,
 });
 
+export const clearSearchResult = () => ({
+  type: 'CLEAR_SEARCH'
+})
+
 export const registerUser = (details) => {
   try {
     options = {
@@ -60,6 +64,7 @@ export const logIn = (details) => {
           if (data.token) {
             console.log(data.token);
             localStorage.setItem("user", data.token);
+            window.location = `/dashboard`;
             dispatch(addUsername(details.username));
             dispatch(getPortfolio());
           } else {
