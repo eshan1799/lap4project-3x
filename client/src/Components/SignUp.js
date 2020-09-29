@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { registerUser } from '../actions/Actions'
 
 class SignUp extends React.Component {
-    state = {}
+    state = {
+        details: {}
+    }
 
     handleSubmit = e => {
         e.preventDefault()

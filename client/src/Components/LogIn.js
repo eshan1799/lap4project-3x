@@ -4,7 +4,9 @@ import { logIn } from '../actions/Actions'
 
 
 class LogIn extends React.Component {
-    state = {}
+    state = {
+        details: {}
+    }
 
     handleSubmit = e => {
         e.preventDefault()
