@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { NavLink, Link } from 'react-router-dom'
 import { logIn } from '../actions/Actions'
 
 
@@ -22,6 +23,10 @@ class LogIn extends React.Component {
     render() {
         return (
             <>
+            <nav>
+                <NavLink to='/'>3X</NavLink>
+                <NavLink to='/signup'>Sign Up</NavLink>
+            </nav>
             <h2>Login</h2>
             <form onSubmit={ this.handleSubmit }>
                 <label htmlFor='username'>Username</label>
@@ -30,6 +35,10 @@ class LogIn extends React.Component {
                 <input type='password' name="password" onChange={ this.handleInput }></input>
                 <input type='submit'></input>
             </form>
+
+            <Link to='/signup'>
+                Don't already have an account yet?
+            </Link>
             </>
         )
     }
