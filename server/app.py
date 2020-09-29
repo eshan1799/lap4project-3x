@@ -1,11 +1,10 @@
-from flask import Flask, jsonify,json, request, session
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from flask_session import Session
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
-from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
 from helpers import format_resp
