@@ -60,6 +60,7 @@ export const logIn = (details) => {
             localStorage.setItem("user", data.token);
             dispatch(getPortfolio());
           } else {
+            console.log(data);
             alert(data);
           }
         });
