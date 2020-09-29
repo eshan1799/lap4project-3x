@@ -56,12 +56,18 @@ export const logIn = (details) => {
         .then((r) => r.json())
         .then((data) => {
           if (data.token) {
-            console.log(data.token);
+            // console.log(data.token);
             localStorage.setItem("user", data.token);
+            dispatch(getPortfolio());
           } else {
             alert(data);
           }
         });
+      // .then(() => {
+      //   if (localStorage.getItem("user")) {
+      //     dispatch(getPortfolio());
+      //   }
+      // });
 
       // const response = await fetch(`${url}/login`, options)
       // console.log(response.json())
@@ -75,7 +81,11 @@ export const logIn = (details) => {
 export const getPortfolio = () => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`${url}/portfolio`);
+      const options = {
+        method: "GET",
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
+      };
+      const response = await fetch(`${url}/portfolio`, options);
       const portfolio = await response.json();
       console.log(portfolio);
       dispatch(addPortfolio(portfolio));

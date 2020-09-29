@@ -76,21 +76,20 @@ def logout():
 '''NOTE: ADD 405 Route Redirect!!!'''
 
 @app.route('/portfolio', methods=['GET'])
-@login_required
+# @login_required
+@jwt_required
 def portfolio():
-    balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': session.get("id")})
-    # balance = db.session.execute('SELECT balance FROM balance WHERE id = 1')
+    user_id = get_jwt_identity()
+    balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': user_id})
     balance_val = format_resp(balance)
     balance_round = round(balance_val[0]['balance'],2)
-    equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': session.get('id')})
-    # equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = 1')
+    equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': user_id})
     equity_val = format_resp(equity)
     equity_round = round(equity_val[0]['sum'], 2)
-    stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': session.get("id")})
-    # stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = 1')
+    stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': user_id})
     stock_list = format_resp(stocks)
     portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
-    return jsonify(portfolio)
+    return jsonify(portfolio),200
 
 @app.route('/buy', methods=['POST', 'PATCH'])
 # @login_required
@@ -135,9 +134,11 @@ def history():
     return jsonify(response)
 
 @app.route('/compare_auth', methods=['GET'])
-@login_required
+# @login_required
+@jwt_required
 def compare_auth():
-    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':session.get("id")})
+    user_id = get_jwt_identity()
+    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':user_id})
     total_breakdown = format_resp(total_breakdown)
 
     for user in total_breakdown:
@@ -145,7 +146,7 @@ def compare_auth():
         user['balance'] = user['balance']/portfolio_total
         user['stock'] = user['stock']/portfolio_total
     
-    stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':session.get("id")})
+    stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':user_id})
     stock_breakdown = format_resp(stock_breakdown)
     stock_grouped = {}
     for stock in stock_breakdown:
