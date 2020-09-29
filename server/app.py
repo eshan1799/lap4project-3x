@@ -55,7 +55,6 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    # session.clear()
     details = request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
     response = format_resp(resultproxy)
@@ -64,10 +63,8 @@ def login():
         return jsonify('User Does Not Exist'),401
     else:
         if (pw.verify(details['password'], response[0]['hash'])):
-            # session["id"] = response[0]["id"]
-            access_token = create_access_token(identity=response[0]["id"],expires_delta=False)
-
-            return jsonify(access_token),200
+            token = create_access_token(identity=response[0]["id"],expires_delta=False)
+            return jsonify(token = token),200
         else:
             return jsonify("User Found, Password Incorrect"), 401
 
