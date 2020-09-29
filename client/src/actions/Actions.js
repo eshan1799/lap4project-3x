@@ -53,12 +53,9 @@ export const logIn = (details) => {
                 method: 'POST',
                 body: JSON.stringify(details)
             }
-            // fetch(`${url}/login`, options)
-            //     .then(r => r.json())
-            //     .then(data => dispatch(getPortfolio()))
-            //     // .then(getPortfolio())
             const response = await fetch(`${url}/login`, options)
-            console.log(response)
+            const username = response.json()
+            dispatch(addUsername(username))
             dispatch(getPortfolio())
             } catch (err) {
                 console.warn(err.message)
@@ -70,9 +67,10 @@ export const logIn = (details) => {
 export const getPortfolio = () => {
     return async dispatch => {
         try {
-            const response = await fetch(`${url}/portfolio`)
+            const options = {
+            }
+            const response = await fetch(`${url}/portfolio`, options)
             const portfolio = await response.json()
-            console.log(portfolio)
             dispatch(addPortfolio(portfolio))
         } catch (err) {
             console.warn(err.message)
@@ -82,12 +80,58 @@ export const getPortfolio = () => {
 export const getHistory = () => {
     return async dispatch => {
         try {
-            const history = await fetch(`${url}/history`)
+            const options = {
+            }
+            const history = await fetch(`${url}/history`, options)
             dispatch(addHistory(history))
         } catch (err) {
             console.warn(err.message)
         }
     }
+}
+
+export const newShare = (order) => {
+    try {
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(order)
+        }
+    } catch (err) {
+        console.warn(err.message)
+    }
+}
+
+export const updateShares = (order) => {
+    try {
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify(order)
+        }
+    } catch(err) {
+        console.warn(err.message)
+    }
+}
+
+export const sellShare = (order) => {
+    try {
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify(order)
+        }
+        
+    } catch(err) {
+        console.warn(err.message)
+    }
+
 }
 
 export const getSearch = (ticker, token) => {
