@@ -1,5 +1,5 @@
 const url = "http://localhost:5000";
-const token = 'pk_805248909bc94205989d68559f04fcb3'
+const token = "pk_805248909bc94205989d68559f04fcb3";
 
 import "regenerator-runtime/runtime";
 
@@ -60,22 +60,13 @@ export const logIn = (details) => {
           if (data.token) {
             console.log(data.token);
             localStorage.setItem("user", data.token);
-            // dispatch(addUsername(username))
+            dispatch(addUsername(details.username));
             dispatch(getPortfolio());
           } else {
             console.log(data);
             alert(data);
           }
         });
-      // .then(() => {
-      //   if (localStorage.getItem("user")) {
-      //     dispatch(getPortfolio());
-      //   }
-      // });
-
-      // const response = await fetch(`${url}/login`, options)
-      // console.log(response.json())
-      // dispatch(getPortfolio())
     } catch (err) {
       console.warn(err.message);
     }
@@ -101,7 +92,11 @@ export const getPortfolio = () => {
 export const getHistory = () => {
   return async (dispatch) => {
     try {
-      const history = await fetch(`${url}/history`);
+      const options = {
+        method: "GET",
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
+      };
+      const history = await fetch(`${url}/history`, options);
       dispatch(addHistory(history));
     } catch (err) {
       console.warn(err.message);
@@ -110,48 +105,53 @@ export const getHistory = () => {
 };
 
 export const newShare = (order) => {
-    try {
-        const options = {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            body: JSON.stringify(order)
-        }
-    } catch (err) {
-        console.warn(err.message)
-    }
-}
+  try {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("user")}`,
+      },
+      method: "POST",
+      body: JSON.stringify(order),
+    };
+    fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
+  } catch (err) {
+    console.warn(err.message);
+  }
+};
 
 export const updateShares = (order) => {
-    try {
-        const options = {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'PATCH',
-            body: JSON.stringify(order)
-        }
-    } catch(err) {
-        console.warn(err.message)
-    }
-}
+  try {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("user")}`,
+      },
+      method: "PATCH",
+      body: JSON.stringify(order),
+    };
+    fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
+  } catch (err) {
+    console.warn(err.message);
+  }
+};
 
 export const sellShare = (order) => {
-    try {
-        const options = {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'PATCH',
-            body: JSON.stringify(order)
-        }
-        
-    } catch(err) {
-        console.warn(err.message)
-    }
-
-}
+  try {
+    //need Auth
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("user")}`,
+      },
+      method: "PATCH",
+      body: JSON.stringify(order),
+    };
+    fetch(`${url}/sell`, options).then(dispatch(getPortfolio()));
+  } catch (err) {
+    console.warn(err.message);
+  }
+};
 
 export const getSearch = (ticker) => {
   return async (dispatch) => {
@@ -159,7 +159,7 @@ export const getSearch = (ticker) => {
       const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${token}`
       );
-      const searchResult = await response.json()
+      const searchResult = await response.json();
       dispatch(addSearch(searchResult));
     } catch (err) {
       console.warn(err.message);
@@ -183,7 +183,11 @@ export const getHistoricPrices = (ticker, range = "1y", token) => {
 export const getAuthComparison = () => {
   return async (dispatch) => {
     try {
-      const comparison = await fetch(`${url}/compare_auth`);
+      const options = {
+        method: "GET",
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
+      };
+      const comparison = await fetch(`${url}/compare_auth`, options);
       dispatch(addComparison(comparison));
     } catch (err) {
       console.warn(err.message);
