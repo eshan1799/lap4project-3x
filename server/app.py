@@ -1,6 +1,10 @@
-from flask import Flask, jsonify,json, request, session, Response, make_response
+from flask import Flask, jsonify,json, request, session
 from flask_cors import CORS
 from flask_session import Session
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 from tempfile import mkdtemp
 from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
@@ -13,9 +17,11 @@ app = Flask(__name__)
 CORS(app)
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+# app.config["SESSION_FILE_DIR"] = mkdtemp()
+# app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_TYPE"] = "filesystem"
+app.config["SECRET_KEY"] = "secret"
+jwt = JWTManager(app)
 Session(app)
 
 
@@ -33,13 +39,13 @@ def register():
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1', {'1': details['username']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return Response(json.dumps("Username Taken"), status=401, mimetype='application/json')
+        return jsonify("Username Taken"),401
     
 
     resultproxy = db.session.execute('SELECT * FROM users WHERE email = :1', {'1': details['email']})
     response = format_resp(resultproxy)
     if (len(response) == 1):
-        return jsonify("Email Already Registered to Account")
+        return jsonify("Email Already Registered to Account"),400
 
     hash_pw = pw.hash(details['password'])
     resultproxy = db.session.execute('INSERT INTO users (username,hash,email) VALUES (:1, :2, :3) RETURNING id', {'1': details['username'], '2':hash_pw, '3':details['email']})
@@ -49,19 +55,18 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    session.clear()
     details = request.get_json()
     resultproxy = db.session.execute('SELECT * FROM users WHERE username = :1',{'1': details['username']})
     response = format_resp(resultproxy)
 
     if len(response) == 0:
-        return jsonify('User Does Not Exist')
+        return jsonify('User Does Not Exist'),401
     else:
         if (pw.verify(details['password'], response[0]['hash'])):
-            session["id"] = response[0]["id"]
-            return jsonify(session.get("id"))
+            token = create_access_token(identity=response[0]["id"],expires_delta=False)
+            return jsonify(token = token),200
         else:
-            return jsonify("User Found, Password Incorrect")
+            return jsonify("User Found, Password Incorrect"), 401
 
 @app.route('/logout')
 def logout():
@@ -71,21 +76,20 @@ def logout():
 '''NOTE: ADD 405 Route Redirect!!!'''
 
 @app.route('/portfolio', methods=['GET'])
-@login_required
+# @login_required
+@jwt_required
 def portfolio():
-    balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': session.get("id")})
-    # balance = db.session.execute('SELECT balance FROM balance WHERE id = 1')
+    user_id = get_jwt_identity()
+    balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': user_id})
     balance_val = format_resp(balance)
     balance_round = round(balance_val[0]['balance'],2)
-    equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': session.get('id')})
-    # equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = 1')
+    equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': user_id})
     equity_val = format_resp(equity)
     equity_round = round(equity_val[0]['sum'], 2)
-    stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': session.get("id")})
-    # stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = 1')
+    stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': user_id})
     stock_list = format_resp(stocks)
     portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
-    return jsonify(portfolio)
+    return jsonify(portfolio),200
 
 @app.route('/buy', methods=['POST', 'PATCH'])
 # @login_required
@@ -110,17 +114,10 @@ def buy():
     
 
 @app.route('/sell', methods=['PATCH'])
-# @login_required
+@login_required
 def sell():
     session["id"] = 1
     sell_order = request.get_json()
-
-    # if request.method == 'POST':
-    #     db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5', {'1': session.get('id'), '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], 5: sell_order['price']})
-    #     db.session.execute('INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price) VALUES (:1, :2, :3, :4, :5, :6', {'1': session.get('id'), '2': sell_order['ticker'], '3': sell_order['name'], '4': sell_order['exchange'], '5': sell_order['shares'], '6': sell_order['price']})
-    #     db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (sell_order['shares'] * sell_order['price']), '2': session.get('id')})
-    #     db.session.commit()
-    #     return jsonify(200)
 
     if request.method == 'PATCH':
         db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': session.get('id'), '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], '5': sell_order['price']})
@@ -137,9 +134,11 @@ def history():
     return jsonify(response)
 
 @app.route('/compare_auth', methods=['GET'])
-@login_required
+# @login_required
+@jwt_required
 def compare_auth():
-    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':session.get("id")})
+    user_id = get_jwt_identity()
+    total_breakdown = db.session.execute('WITH sum AS (SELECT user_id, SUM(position) AS stock FROM portfolio GROUP BY 1) SELECT users.id, users.username, balance.balance, sum.stock FROM users INNER JOIN balance ON users.id = balance.user_id INNER JOIN sum ON users.id = sum.user_id WHERE users.id != :1',{'1':user_id})
     total_breakdown = format_resp(total_breakdown)
 
     for user in total_breakdown:
@@ -147,7 +146,7 @@ def compare_auth():
         user['balance'] = user['balance']/portfolio_total
         user['stock'] = user['stock']/portfolio_total
     
-    stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':session.get("id")})
+    stock_breakdown = db.session.execute('SELECT user_id, ticker, name, exchange, position FROM portfolio WHERE user_id != :1;',{'1':user_id})
     stock_breakdown = format_resp(stock_breakdown)
     stock_grouped = {}
     for stock in stock_breakdown:
@@ -222,15 +221,12 @@ def check():
 @app.route('/token', methods=['GET'])
 def add():
     session["id"] = 1
-
-    id_cookie = make_response("Set cookie")
-    id_cookie.set_cookie('id', '1', max_age=60*60)
-    return id_cookie
+    return jsonify ("Test Token set")
 
 @app.route('/clear')
 def clear():
     session.clear()
-    return jsonify("Test ID cleared")
+    return jsonify("Test Token cleared")
 
 
 
