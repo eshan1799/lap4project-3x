@@ -1,11 +1,34 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {NavLink} from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
+import { Stock } from './index/index'
 
 class Portfolio extends React.Component {
-    return(){
-        <>
-        </>
+
+    renderStocks = portfolio => {
+        return portfolio.map((stock, index) => (
+            <div key={ index }>
+                <Link to={{
+                        pathname:'/dashboard/trade',
+                        stock:{ 
+                            stock:stock.ticker
+                        }
+                    }}><Stock stock={ stock } />
+                </Link>
+            </div>
+        ))
+    }
+
+    render() {
+        return (
+            <>
+                <div id='portfolio'>
+                    <h2>Portfolio</h2>
+                    { this.props.portfolio  ? this.renderStocks(this.props.portfolio) : 'There are no stocks' }
+                </div>
+                
+            </>
+        )
     }
 }
 
