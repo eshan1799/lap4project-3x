@@ -18,11 +18,11 @@ class Dashboard extends React.Component {
             <h1>Hello, { this.props.username }!</h1>
             <h2>Cash: ${ this.props.cash } Equity: ${ this.props.equity } Balance: ${ this.props.equity }</h2>
             <Switch>
-                <Route path='/portfolio' component={ Portfolio } />
-                <Route path='/search' component={ Search } />
-                <Route path='/trade' component={ Trade } />
-                <Route path='/tradehistory' component={ TradeHistory } />
-                <Route path='/authpreviewothers' component={ AuthPreviewOthers } />
+                <Route path='/dashboard/portfolio' component={ Portfolio } />
+                <Route path='/dashboard/search' component={ Search } />
+                <Route path='/dashboard/trade' component={ Trade } />
+                <Route path='/dashboard/tradehistory' component={ TradeHistory } />
+                <Route path='/dashboard/authpreviewothers' component={ AuthPreviewOthers } />
             </Switch>
             </>
         )
