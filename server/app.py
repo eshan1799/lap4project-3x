@@ -61,7 +61,7 @@ def login():
     response = format_resp(resultproxy)
 
     if len(response) == 0:
-        return jsonify('User Does Not Exist')
+        return jsonify('User Does Not Exist'),401
     else:
         if (pw.verify(details['password'], response[0]['hash'])):
             # session["id"] = response[0]["id"]
@@ -69,7 +69,7 @@ def login():
 
             return jsonify(access_token),200
         else:
-            return jsonify("User Found, Password Incorrect")
+            return jsonify("User Found, Password Incorrect"), 401
 
 @app.route('/logout')
 def logout():
