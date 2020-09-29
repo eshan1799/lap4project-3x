@@ -29,7 +29,7 @@ class SignUp extends React.Component {
             <h2>Register</h2>
             <form onSubmit={ this.handleSubmit }>
                 <label htmlFor='username'>Username</label>
-                <input type='text' name="username" onChange={ this.handleInput } ></input>
+                <input type='text' name="username" onChange={ this.handleInput } autoFocus ></input>
                 <label htmlFor='password'>Password</label>
                 <input type='password' name="password" onChange={ this.handleInput }></input>
                 <label htmlFor='email'>Email</label>

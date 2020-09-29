@@ -58,7 +58,7 @@ export const logIn = (details) => {
         .then((r) => r.json())
         .then((data) => {
           if (data.token) {
-            // console.log(data.token);
+            console.log(data.token);
             localStorage.setItem("user", data.token);
             // dispatch(addUsername(username))
             dispatch(getPortfolio());
