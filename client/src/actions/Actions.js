@@ -197,8 +197,9 @@ export const getAuthComparison = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const comparison = await fetch(`${url}/compare_auth`, options);
-      dispatch(addComparison(comparison));
+      const response = await fetch(`${url}/compare_auth`, options);
+      const authComparison = await response.json();
+      dispatch(addComparison(authComparison));
     } catch (err) {
       console.warn(err.message);
     }
