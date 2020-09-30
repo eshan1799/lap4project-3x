@@ -38,15 +38,17 @@ export const signOut = () => ({
 })
 
 export const registerUser = (details) => {
-  try {
-    options = {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      body: JSON.stringify(details),
-    };
-    fetch(`${url}/register`, options);
-  } catch (err) {
-    console.warn(err.message);
+  return async  => {
+    try {
+      const options = {
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+        body: JSON.stringify(details),
+      };
+      fetch(`${url}/register`, options);
+    } catch (err) {
+      console.warn(err.message);
+    }
   }
 };
 
