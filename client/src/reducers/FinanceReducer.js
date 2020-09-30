@@ -12,8 +12,6 @@ const initState = {
 
 const FinanceReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'ADD_USERNAME':
-            return { ...state, username: action.payload }
         case 'ADD_PORTFOLIO':
             return { ...state,username:action.payload.username, cash: action.payload.cash, equity: action.payload.equity, balance: (action.payload.cash + action.payload.equity), portfolio: action.payload.portfolio }
         case 'ADD_HISTORY':
