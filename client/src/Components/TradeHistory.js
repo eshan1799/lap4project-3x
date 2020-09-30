@@ -1,14 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { IndividualHistory } from "./index/index"
+import { getHistory } from '../actions/Actions'
 
 class TradeHistory extends React.Component {
+    componentDidMount() {
+        this.props.getHistory()
+    }
     render() {
         return(
             <>
-
+                <h1>Trade History</h1>
+                {this.props.history.map((trade, idx) => <IndividualHistory key={idx}/>)}
             </>
         )
     }
 }
 
+const mSTP = state => ({
+    history: state.history
+})
 
-export default TradeHistory;
+const mDTP = dispatch => ({
+    getHistory: () => dispatch(getHistory())
+})
+
+
+export default connect(mSTP,mDTP)(TradeHistory);

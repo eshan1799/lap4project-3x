@@ -100,7 +100,8 @@ export const getHistory = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const history = await fetch(`${url}/history`, options);
+      const response = await fetch(`${url}/history`, options);
+      const history = await response.json();
       dispatch(addHistory(history));
     } catch (err) {
       console.warn(err.message);

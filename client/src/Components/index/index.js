@@ -13,3 +13,4 @@ export { default as TradeHistory } from '../TradeHistory';
 export { default as AuthPreviewOthers } from '../AuthPreviewOthers';
 export { default as PrivateRoute } from '../PrivateRoute';
 export { default as UnauthRoute } from '../UnauthRoute';
+export { default as IndividualHistory} from '../IndividualHistory'
