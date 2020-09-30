@@ -118,9 +118,9 @@ def sell():
     sell_order = request.get_json()
 
     # if request.method == 'PATCH':
-    db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': sell_order['ticker'], '3': 'sell', '4': sell_order['shares'], '5': sell_order['price']})
-    db.session.execute('UPDATE portfolio SET shares = shares - :1, price = :2 WHERE user_id = :3 AND ticker = :4', {'1': sell_order['shares'], '2': sell_order['price'], '3': user_id, '4': sell_order['ticker']})
-    db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (sell_order['shares'] * sell_order['price']), '2': user_id})
+    db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': sell_order['ticker'], '3': 'sell', '4': float(sell_order['shares']), '5': sell_order['price']})
+    db.session.execute('UPDATE portfolio SET shares = shares - :1, price = :2 WHERE user_id = :3 AND ticker = :4', {'1': float(sell_order['shares']), '2': sell_order['price'], '3': user_id, '4': sell_order['ticker']})
+    db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (float(sell_order['shares']) * sell_order['price']), '2': user_id})
     db.session.commit()
     return jsonify('Transaction Complete: Sell '+sell_order['ticker'])
 
