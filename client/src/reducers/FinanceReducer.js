@@ -7,7 +7,7 @@ const initState = {
     history: [],
     searchResult: {},
     historicPrices: {},
-    comparison: {}
+    comparison: []
 }
 
 const FinanceReducer = (state = initState, action) => {

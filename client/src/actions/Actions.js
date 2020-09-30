@@ -204,11 +204,12 @@ export const getAuthComparison = () => {
   };
 };
 
-export const getUnAuthComparison = () => {
+export const getUnauthComparison = () => {
   return async (dispatch) => {
     try {
-      const comparison = await fetch(`${url}/compare_unauth`);
-      dispatch(addComparison(comparison));
+      const response = await fetch(`${url}/compare_unauth`);
+      const unauthComparison = await response.json();
+      dispatch(addComparison(unauthComparison));
     } catch (err) {
       console.warn(err.message);
     }
