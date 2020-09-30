@@ -1,18 +1,17 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Stock, TradeOptions, TradeSearch } from './index/index';
+import { TradeOptions, TradeSearch } from './index/index';
 import { connect } from 'react-redux';
 import { getSearch } from '../actions/Actions';
 
 class Trade extends React.Component {
     componentDidMount() {
-        this.props.newSearch(this.props.location.stock.stock)
+        if (this.props.location.stock) {this.props.newSearch(this.props.location.stock.stock)}
     }
 
     render() {
         return(
             <>
-            {this.props.search ? <TradeOptions /> : <TradeSearch />}
+            {this.props.search.symbol ? <TradeOptions /> : <TradeSearch />}
             </>
         )
     }

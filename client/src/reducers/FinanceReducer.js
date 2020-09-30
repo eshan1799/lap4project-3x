@@ -13,7 +13,7 @@ const initState = {
 const FinanceReducer = (state = initState, action) => {
     switch (action.type) {
         case 'ADD_PORTFOLIO':
-            return { ...state,username:action.payload.username, cash: action.payload.cash, equity: action.payload.equity, balance: (action.payload.cash + action.payload.equity), portfolio: action.payload.portfolio }
+            return { ...state,username:action.paylaod.username, cash: action.payload.cash.toFixed(2), equity: action.payload.equity.toFixed(2), balance: (action.payload.cash + action.payload.equity).toFixed(2), portfolio: action.payload.portfolio }
         case 'ADD_HISTORY':
             return { ...state, history: action.payload }
         case 'ADD_SEARCH':
