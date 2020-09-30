@@ -9,6 +9,10 @@ class Dashboard extends React.Component {
         this.props.getPort()
     }
 
+    logOut = () => {
+        localStorage.clear()
+    }
+
     render() {
         return (
             <>
@@ -19,6 +23,7 @@ class Dashboard extends React.Component {
                     <NavLink to='/dashboard/trade'>Trade</NavLink>
                     <NavLink to='/dashboard/tradehistory'>History</NavLink>
                     <NavLink to='/dashboard/authpreviewothers'>Compare</NavLink>
+                    <NavLink to='/' onClick={this.logOut}>Log Out</NavLink>
                 </nav>
                 <h1>Hello, {this.props.username}!</h1>
                 <h2>Cash: ${this.props.cash} Equity: ${this.props.equity} Balance: ${this.props.balance}</h2>

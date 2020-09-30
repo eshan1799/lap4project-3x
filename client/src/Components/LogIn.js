@@ -16,10 +16,10 @@ class LogIn extends React.Component {
         this.setState({ loggedIn: true })
     }
 
-    handleInput = (e) => {
+    handleInput = e => {
         let details = this.state.details;
         details[e.target.name] = e.target.value
-        // this.setState({ details })
+        this.setState({ details })
     }
 
     render() {
