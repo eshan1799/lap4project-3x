@@ -34,7 +34,7 @@ CREATE TABLE history (
     action varchar(255),
     shares FLOAT,
     price FLOAT,
-    datetime DATE DEFAULT CURRENT_TIMESTAMP
+    datetime TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP(0)
 );
 
 INSERT INTO users (username, hash, email)
