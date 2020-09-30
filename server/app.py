@@ -203,4 +203,20 @@ def reset():
     db.session.commit()
     return jsonify('Account Reset')
 
+@app.route('/update')
+def update():
+    check_ticker={}
+    result_proxy = db.session.execute('SELECT id, ticker FROM portfolio')
+    stocks = format_resp(result_proxy)
+    for stock in stocks:
+        if (stock['ticker'] in check_ticker):
+            db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': check_ticker[stock['ticker']] + 1, '2': stock['id']})
+            db.session.commit()
+        else:
+            
+            db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': 1, '2': stock['id']})
+            db.session.commit()
+            check_ticker[stock['ticker']]=1
+    return jsonify (check_ticker)
+
 app.run(debug=True)
