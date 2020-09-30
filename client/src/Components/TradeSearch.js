@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { getSearch } from '../actions/Actions'
 
 class TradeSearch extends React.Component {
     state = {
         ticker: ""
     }
 
-    handleSubmit = e => {
+    handleSubmit = (e) => {
         e.preventDefault()
         this.props.newSearch(this.state.ticker)
     }
@@ -19,8 +20,8 @@ class TradeSearch extends React.Component {
 
     render() {
         return (
-            <form>
-                <input type='text' placeholder="TICKER"></input>
+            <form onSubmit={this.handleSubmit}>
+                <input type='text' placeholder="TICKER" onChange={this.handleInput} maxLength="4"></input>
                 <input type='submit'/>
             </form>
         )

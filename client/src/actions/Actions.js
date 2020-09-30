@@ -91,7 +91,6 @@ export const getPortfolio = () => {
       };
       const response = await fetch(`${url}/portfolio`, options);
       const portfolio = await response.json();
-      console.log(portfolio);
       dispatch(addPortfolio(portfolio));
     } catch (err) {
       console.warn(err.message);

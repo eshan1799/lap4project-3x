@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
             <>
                 <nav>
                     <NavLink to='/'>3X</NavLink>
-                    <NavLink to='/dashboard/portfolio'>Portfolio</NavLink>
+                    <NavLink to='/dashboard'>Portfolio</NavLink>
                     <NavLink to='/dashboard/search'>Search</NavLink>
                     <NavLink to='/dashboard/trade'>Trade</NavLink>
                     <NavLink to='/dashboard/tradehistory'>History</NavLink>
