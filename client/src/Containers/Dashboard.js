@@ -48,8 +48,8 @@ const mSTP = state => ({
 })
 
 const mDTP = dispatch => ({
-    getPort: () => dispatch(getPortfolio()),
-    logOff: () => dispatch(signOut())
+    logOff: () => dispatch(signOut()),
+    getPort: () => dispatch(getPortfolio())
 })
 
 export default connect(mSTP, mDTP)(Dashboard)
