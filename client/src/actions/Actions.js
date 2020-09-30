@@ -179,7 +179,7 @@ export const getSearch = (ticker) => {
   };
 };
 
-export const getHistoricPrices = (ticker, range = "1y", token) => {
+export const getHistoricPrices = (ticker, range = "1y") => {
   return async (dispatch) => {
     try {
       const historicPrices = await fetch(
