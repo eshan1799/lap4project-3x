@@ -7,6 +7,7 @@ const initState = {
     history: [],
     searchResult: {},
     historicPrices: {},
+    news: [],
     comparison: []
 }
 
@@ -20,6 +21,8 @@ const FinanceReducer = (state = initState, action) => {
             return { ...state, searchResult: action.payload }
         case 'ADD_HISTORIC_PRICES':
             return { ...state, historicPrices: action.payload }
+        case 'ADD_NEWS':
+            return { ...state, news: action.payload}
         case 'ADD_COMPARISON':
             return { ...state, comparison: action.payload }
         case 'CLEAR_SEARCH':
