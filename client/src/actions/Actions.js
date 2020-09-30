@@ -184,7 +184,7 @@ export const getSearch = (ticker) => {
   };
 };
 
-export const getHistoricPrices = (ticker, range = "1y") => {
+export const getHistoricPrices = (ticker, range = "1m") => {
   return async (dispatch) => {
     try {
       const response = await fetch(
