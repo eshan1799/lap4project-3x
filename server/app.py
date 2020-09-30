@@ -48,8 +48,9 @@ def register():
     response = format_resp(resultproxy)
     db.session.execute('INSERT INTO balance (user_id,balance) VALUES (:1, 10000)',{'1':response[0]['id']})
     db.session.commit()
+    resp = {'username': response[0]['username'], 'status': 200}
     
-    return jsonify(response[0]['username'])
+    return jsonify(resp)
 
 
 @app.route('/login', methods=['POST'])
