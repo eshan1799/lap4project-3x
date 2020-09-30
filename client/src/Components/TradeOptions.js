@@ -12,7 +12,8 @@ class TradeOptions extends React.Component {
     render() {
         return (
             <>
-                <h3>Quote: {this.props.search.latestPrice ? this.props.search.latestPrice : 'loading'}</h3>
+                <h3>{this.props.search.companyName}</h3>
+                <h3>Quote: ${this.props.search.latestPrice ? this.props.search.latestPrice : 'loading'}</h3>
                 <NavLink to='/dashboard/trade/buy'>Buy</NavLink>
                 <NavLink to='/dashboard/trade/sell'>Sell</NavLink>
                 <Switch>

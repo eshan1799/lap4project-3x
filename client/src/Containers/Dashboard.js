@@ -24,16 +24,16 @@ class Dashboard extends React.Component {
                     <NavLink to='/dashboard/trade'>Trade</NavLink>
                     <NavLink to='/dashboard/tradehistory'>History</NavLink>
                     <NavLink to='/dashboard/authpreviewothers'>Compare</NavLink>
-                    <NavLink to='/' onClick={this.logOut}>Log Out</NavLink>
+                    <NavLink to='/' onClick={ this.logOut }>Log Out</NavLink>
                 </nav>
-                <h1>Hello, {this.props.username}!</h1>
-                <h2>Cash: ${this.props.cash} Equity: ${this.props.equity} Balance: ${this.props.balance}</h2>
+                <h1>Hello, { this.props.username }!</h1>
+                <h2>Cash: ${ this.props.cash } Equity: ${ this.props.equity } Balance: ${ this.props.balance }</h2>
                 <Switch>
-                    <Route exact path='/dashboard' component={Portfolio} />
-                    <Route path='/dashboard/search' component={Search} />
-                    <Route path='/dashboard/trade' component={Trade} />
-                    <Route path='/dashboard/tradehistory' component={TradeHistory} />
-                    <Route path='/dashboard/authpreviewothers' component={AuthPreviewOthers} />
+                    <Route exact path='/dashboard' component={ Portfolio } />
+                    <Route path='/dashboard/search' component={ Search } />
+                    <Route path='/dashboard/trade' component={ Trade } />
+                    <Route path='/dashboard/tradehistory' component={ TradeHistory } />
+                    <Route path='/dashboard/authpreviewothers' component={ AuthPreviewOthers } />
                 </Switch>
             </>
         )

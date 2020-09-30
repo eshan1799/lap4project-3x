@@ -146,18 +146,20 @@ export const updateShares = (order) => {
 };
 
 export const sellShare = (order) => {
-  try {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("user")}`,
-      },
-      method: "PATCH",
-      body: JSON.stringify(order),
-    };
-    fetch(`${url}/sell`, options).then(dispatch(getPortfolio()));
-  } catch (err) {
-    console.warn(err.message);
+  return async dispatch => {
+    try {
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("user")}`,
+        },
+        method: "PATCH",
+        body: JSON.stringify(order),
+      };
+      fetch(`${url}/sell`, options).then(dispatch(getPortfolio()));
+    } catch (err) {
+      console.warn(err.message);
+    }
   }
 };
 
@@ -195,8 +197,9 @@ export const getAuthComparison = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const comparison = await fetch(`${url}/compare_auth`, options);
-      dispatch(addComparison(comparison));
+      const response = await fetch(`${url}/compare_auth`, options);
+      const authComparison = await response.json();
+      dispatch(addComparison(authComparison));
     } catch (err) {
       console.warn(err.message);
     }
