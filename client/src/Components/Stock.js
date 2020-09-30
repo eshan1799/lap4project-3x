@@ -6,7 +6,7 @@ class Stock extends React.Component {
         return (
             <>
                 <h3>Name: {this.props.stock.name} </h3>
-                <p>Shares: {this.props.stock.shares} Price: {this.props.stock.price} Position: ${this.props.stock.position} </p>
+                <p>Shares: {this.props.stock.shares} Price: {this.props.stock.price.toFixed(2)} Position: ${this.props.stock.position.toFixed(2)} </p>
                 <Link to={{
                         pathname:'/dashboard/trade',
                         stock:{ 

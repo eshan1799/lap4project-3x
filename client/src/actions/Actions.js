@@ -113,7 +113,8 @@ export const getHistory = () => {
 };
 
 export const newShare = (order) => {
-  try {
+  return async dispatch => {
+    try {
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -123,30 +124,32 @@ export const newShare = (order) => {
       body: JSON.stringify(order),
     };
     fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
-  } catch (err) {
-    console.warn(err.message);
+    } catch (err) {
+      console.warn(err.message);
+    }
   }
 };
 
 export const updateShares = (order) => {
-  try {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("user")}`,
-      },
-      method: "PATCH",
-      body: JSON.stringify(order),
-    };
-    fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
-  } catch (err) {
-    console.warn(err.message);
+  return async dispatch => {
+    try {
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("user")}`,
+        },
+        method: "PATCH",
+        body: JSON.stringify(order),
+      };
+      fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
+    } catch (err) {
+      console.warn(err.message);
+    }
   }
 };
 
 export const sellShare = (order) => {
   try {
-    //need Auth
     const options = {
       headers: {
         "Content-Type": "application/json",
