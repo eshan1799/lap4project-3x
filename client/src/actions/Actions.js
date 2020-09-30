@@ -3,10 +3,6 @@ const token = "pk_805248909bc94205989d68559f04fcb3";
 
 import "regenerator-runtime/runtime";
 
-const addUsername = (username) => ({
-  type: "ADD_USERNAME",
-  payload: username,
-});
 
 const addPortfolio = (portfolio) => ({
   type: "ADD_PORTFOLIO",
@@ -69,7 +65,6 @@ export const logIn = (details) => {
             console.log(data.token);
             localStorage.setItem("user", data.token);
             window.location = `/dashboard`;
-            dispatch(addUsername(details.username));
             dispatch(getPortfolio());
           } else {
             console.log(data);
@@ -104,7 +99,8 @@ export const getHistory = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const history = await fetch(`${url}/history`, options);
+      const response = await fetch(`${url}/history`, options);
+      const history = await response.json();
       dispatch(addHistory(history));
     } catch (err) {
       console.warn(err.message);
