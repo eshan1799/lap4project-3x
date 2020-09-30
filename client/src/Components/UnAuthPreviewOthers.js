@@ -25,10 +25,10 @@ class UnauthPreviewOthers extends React.Component {
             <div>{this.props.comparison.map((user, index) => {
                     return (
                             <div key={ index }>
-                                <h2>User {index + 1 }</h2>
+                                <h2>User { index + 1 }</h2>
                                 <h4>Total Breakdown</h4>
                                 <p>Balance: { this.roundDP(user.balance, 2) }%</p>
-                                <p >Stock: { this.roundDP(user.stock, 2) }%</p>
+                                <p>Stock: { this.roundDP(user.stock, 2) }%</p>
                             </div>
                     )
                 })}</div>
