@@ -72,7 +72,9 @@ def login():
 @jwt_required
 def portfolio():
     user_id = get_jwt_identity()
-    balance = db.session.execute('SELECT balance FROM balance WHERE id = :1', {'1': user_id})
+    username = db.session.execute('SELECT username FROM users WHERE id = :1', {'1': user_id})
+    username_val = format_resp(username)
+    balance = db.session.execute('SELECT balance FROM balance WHERE user_id = :1', {'1': user_id})
     balance_val = format_resp(balance)
     balance_round = round(balance_val[0]['balance'],2)
     equity = db.session.execute('SELECT user_id, SUM(position) AS sum FROM portfolio GROUP BY user_id HAVING user_id = :1', {'1': user_id})
@@ -84,7 +86,7 @@ def portfolio():
     else:
         equity_round = 0
         stock_list = []
-    portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list}
+    portfolio = {'cash': balance_round, 'equity': equity_round,'portfolio': stock_list, 'username':username_val[0]['username']}
     return jsonify(portfolio),200
 
 @app.route('/buy', methods=['POST', 'PATCH'])
@@ -94,16 +96,16 @@ def buy():
     buy_order = request.get_json()
     
     if request.method == 'POST':
-        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': buy_order['ticker'], '3': 'buy', '4': buy_order['shares'], '5': buy_order['price']})
-        db.session.execute('INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price) VALUES (:1, :2, :3, :4, :5, :6)', {'1': user_id, '2': buy_order['ticker'], '3': buy_order['name'], '4': buy_order['exchange'], '5': buy_order['shares'], '6': buy_order['price']})
-        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (buy_order['shares'] * buy_order['price']), '2': user_id})
+        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': buy_order['ticker'], '3': 'buy', '4': float(buy_order['shares']), '5': buy_order['price']})
+        db.session.execute('INSERT INTO portfolio (user_id, ticker, name, exchange, shares, price) VALUES (:1, :2, :3, :4, :5, :6)', {'1': user_id, '2': buy_order['ticker'], '3': buy_order['name'], '4': buy_order['exchange'], '5': float(buy_order['shares']), '6': buy_order['price']})
+        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (float(buy_order['shares']) * buy_order['price']), '2': user_id})
         db.session.commit()
         return jsonify ('Transaction Complete: Buy '+buy_order['ticker'])
     
     if request.method == 'PATCH':
-        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': buy_order['ticker'], '3': 'buy', '4': buy_order['shares'], '5': buy_order['price']})
-        db.session.execute('UPDATE portfolio SET shares = shares + :1,  price = :2 WHERE user_id = :3 AND ticker = :4', {'1': buy_order['shares'],'2': buy_order['price'], '3': user_id, '4': buy_order['ticker']})
-        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (buy_order['shares'] * buy_order['price']), '2': user_id})
+        db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': buy_order['ticker'], '3': 'buy', '4': float(buy_order['shares']), '5': buy_order['price']})
+        db.session.execute('UPDATE portfolio SET shares = shares + :1,  price = :2 WHERE user_id = :3 AND ticker = :4', {'1': float(buy_order['shares']),'2': buy_order['price'], '3': user_id, '4': buy_order['ticker']})
+        db.session.execute('UPDATE balance SET balance = balance - :1 WHERE user_id = :2', {'1': (float(buy_order['shares']) * buy_order['price']), '2': user_id})
         db.session.commit()
         return jsonify('Transaction Complete: Buy '+buy_order['ticker'])
 

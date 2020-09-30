@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { NavLink, Route, Switch } from 'react-router-dom'
 import { clearSearchResult } from '../actions/Actions'
+import { Buying, Sell } from './index/index'
 
 class TradeOptions extends React.Component {
     componentWillUnmount() {
@@ -10,7 +12,13 @@ class TradeOptions extends React.Component {
     render() {
         return (
             <>
-                <h3>Quote: {this.props.search.iexRealtimePrice ? this.props.search.iexRealtimePrice : 'loading'}</h3>
+                <h3>Quote: {this.props.search.latestPrice ? this.props.search.latestPrice : 'loading'}</h3>
+                <NavLink to='/dashboard/trade/buy'>Buy</NavLink>
+                <NavLink to='/dashboard/trade/sell'>Sell</NavLink>
+                <Switch>
+                    <Route path='/dashboard/trade/buy' component={ Buying }/>
+                    <Route path='/dashboard/trade/sell' component={ Sell }/>
+                </Switch>
 
             </>
         )
