@@ -7,9 +7,9 @@ class AuthPreviewOthers extends React.Component {
         this.props.getComparison()
     }
 
-    // roundToDecimalPlace(number, decimalPlaces) {
-    //     return (Number(Math.round(number + 'e' + decimalPlaces) + 'e-' + 3) * 100)
-    // }
+    roundDP(number, decimalPlaces) {
+        return (number * 100).toFixed(decimalPlaces);
+    }
 
     render() {
         return(
@@ -21,8 +21,8 @@ class AuthPreviewOthers extends React.Component {
                             <div key={ index }>
                                 <h2>Username: { user.username }</h2>
                                 <h3>Total Breakdown:</h3>
-                                <p>Cash: { (user.total_breakdown.balance*100).toFixed(2)}%</p>
-                                <p>Equity: { (user.total_breakdown.stock*100).toFixed(2)}%</p>
+                                <p>Cash: { this.roundDP(user.total_breakdown.balance, 2) }%</p>
+                                <p>Equity: { this.roundDP(user.total_breakdown.stock, 2) }%</p>
                                 <h3>Portfolio</h3>
                                 <div>{ user.stock_breakdown.map((stock, stockIndex) => {
                                     return (
@@ -30,7 +30,7 @@ class AuthPreviewOthers extends React.Component {
                                             <p>Name: { stock.name }</p>
                                             <p>Ticker: { stock.ticker }</p>
                                             <p>Exchange: { stock.exchange }</p>
-                                            <p>Position: { (stock.position*100).toFixed(2) }%</p>
+                                            <p>Position: { this.roundDP(stock.position, 2) }%</p>
                                             <br />
                                         </div>
                                     )
