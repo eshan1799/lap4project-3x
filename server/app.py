@@ -9,6 +9,7 @@ from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
 from helpers import format_resp
 from dotenv import load_dotenv
+import requests
 import os
 load_dotenv()
 
@@ -208,15 +209,18 @@ def update():
     check_ticker={}
     result_proxy = db.session.execute('SELECT id, ticker FROM portfolio')
     stocks = format_resp(result_proxy)
+    token = os.getenv("TOKEN")
     for stock in stocks:
         if (stock['ticker'] in check_ticker):
             db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': check_ticker[stock['ticker']] + 1, '2': stock['id']})
             db.session.commit()
         else:
-            
-            db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': 1, '2': stock['id']})
+            response = requests.get(f"https://cloud.iexapis.com/stable/stock/{stock['ticker']}/quote?token={token}")
+            response_dict = response.json()
+            new_price = response_dict['latestPrice']
+            db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': new_price, '2': stock['id']})
             db.session.commit()
-            check_ticker[stock['ticker']]=1
+            check_ticker[stock['ticker']]=new_price
     return jsonify (check_ticker)
 
 app.run(debug=True)
