@@ -11,4 +11,5 @@ export { default as TradeSearch } from '../TradeSearch';
 export { default as TradeOptions } from '../TradeOptions';
 export { default as TradeHistory } from '../TradeHistory';
 export { default as AuthPreviewOthers } from '../AuthPreviewOthers';
-export { default as PrivateRoute } from '../PrivateRoute'
+export { default as PrivateRoute } from '../PrivateRoute';
+export { default as UnauthRoute } from '../UnauthRoute';

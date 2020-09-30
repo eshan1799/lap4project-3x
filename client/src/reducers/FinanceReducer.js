@@ -26,6 +26,8 @@ const FinanceReducer = (state = initState, action) => {
             return { ...state, comparison: action.payload }
         case 'CLEAR_SEARCH':
             return { ...state, searchResult: {}}
+        case 'LOG_OUT':
+            return state = initState
         default:
             return state;
     }

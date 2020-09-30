@@ -37,6 +37,10 @@ export const clearSearchResult = () => ({
   type: 'CLEAR_SEARCH'
 })
 
+export const signOut = () => ({
+  type: 'LOG_OUT'
+})
+
 export const registerUser = (details) => {
   try {
     options = {
