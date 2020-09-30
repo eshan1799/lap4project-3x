@@ -19,10 +19,15 @@ const addSearch = (search) => ({
   payload: search,
 });
 
-const addHistoricPrices = (comparison) => ({
+const addHistoricPrices = (historicPrices) => ({
   type: "ADD_HISTORIC_PRICES",
   payload: historicPrices,
 });
+
+const addNews = (news) => ({
+  type: "ADD_NEWS",
+  payload: news
+})
 
 const addComparison = (comparison) => ({
   type: "ADD_COMPARISON",
@@ -179,18 +184,33 @@ export const getSearch = (ticker) => {
   };
 };
 
-export const getHistoricPrices = (ticker, range = "1y", token) => {
+export const getHistoricPrices = (ticker, range = "1y") => {
   return async (dispatch) => {
     try {
-      const historicPrices = await fetch(
+      const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/chart/${range}?token=${token}`
       );
+      const historicPrices = await response.json();
       dispatch(addHistoricPrices(historicPrices));
     } catch (err) {
       console.warn(err.message);
     }
   };
 };
+
+export const getNews = (ticker) => {
+  return async dispatch =>{
+    try {
+      const response = await fetch(
+        `https://cloud.iexapis.com/stable/stock/${ticker}/news/last?token=${token}`
+      );
+      const news = await response.json()
+      dispatch(addNews(news))
+    } catch (err) {
+      console.warn(err.message)
+    }
+  }
+}
 
 export const getAuthComparison = () => {
   return async (dispatch) => {
