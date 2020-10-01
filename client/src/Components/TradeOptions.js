@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { NavLink, Route, Switch } from 'react-router-dom'
+import { Link, NavLink, Route, Switch } from 'react-router-dom'
 import { clearSearchResult } from '../actions/Actions'
 import { Buying, Sell } from './index/index'
 
@@ -20,6 +20,13 @@ class TradeOptions extends React.Component {
                     <Route path='/dashboard/trade/buy' component={ Buying }/>
                     <Route path='/dashboard/trade/sell' component={ Sell }/>
                 </Switch>
+                { this.props.search.symbol ? <Link to={{
+                        pathname:'/dashboard/search',
+                        stock:{ 
+                            stock: this.props.search.symbol
+                        }
+                    }}>More Info
+                </Link> : '' }
 
             </>
         )

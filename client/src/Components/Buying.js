@@ -30,7 +30,7 @@ class Buy extends React.Component {
         return(
             <>
              <form onSubmit={this.handleSubmit}>
-                 <input required type='number' max={this.props.cash/this.props.search.latestPrice} min="0" step="any" onChange={this.handleInput}></input>
+                 <input required type='number' max={this.props.cash/this.props.search.latestPrice} min="0.2" step="0.2" onChange={this.handleInput}></input>
                  <input type='submit' value='BUY'/>
              </form>
             </>

@@ -10,7 +10,12 @@ class SignUp extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        this.props.signUp(this.state.details)
+        if (this.state.details.password === this.state.details.confirm) {
+            this.props.signUp(this.state.details)
+        } else {
+            alert('Passwords don\'t match!')
+        }
+        
       }
     
       handleInput = (e) => {
@@ -29,11 +34,13 @@ class SignUp extends React.Component {
             <h2>Register</h2>
             <form onSubmit={ this.handleSubmit }>
                 <label htmlFor='username'>Username</label>
-                <input required type='text' name="username" onChange={ this.handleInput } autoFocus ></input>
+                <input required type='text' name="username" onChange={ this.handleInput } autoFocus required></input>
                 <label htmlFor='password'>Password</label>
-                <input required type='password' name="password" onChange={ this.handleInput }></input>
+                <input required type='password' name="password" onChange={ this.handleInput } required></input>
+                <label htmlFor='confirm'>Confirm Password</label>
+                <input required type='password' name="confirm" onChange={ this.handleInput }required></input>
                 <label htmlFor='email'>Email</label>
-                <input required type='email' name='email' onChange={ this.handleInput}></input>
+                <input required type='email' name='email' onChange={ this.handleInput} required></input>
                 <input type='submit'></input>
             </form>
             <Link to='/login'>

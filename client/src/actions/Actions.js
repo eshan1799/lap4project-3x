@@ -3,7 +3,6 @@ const token = "pk_805248909bc94205989d68559f04fcb3";
 
 import "regenerator-runtime/runtime";
 
-
 const addPortfolio = (portfolio) => ({
   type: "ADD_PORTFOLIO",
   payload: portfolio,
@@ -26,8 +25,8 @@ const addHistoricPrices = (historicPrices) => ({
 
 const addNews = (news) => ({
   type: "ADD_NEWS",
-  payload: news
-})
+  payload: news,
+});
 
 const addComparison = (comparison) => ({
   type: "ADD_COMPARISON",
@@ -35,15 +34,15 @@ const addComparison = (comparison) => ({
 });
 
 export const clearSearchResult = () => ({
-  type: 'CLEAR_SEARCH'
-})
+  type: "CLEAR_SEARCH",
+});
 
 export const signOut = () => ({
-  type: 'LOG_OUT'
-})
+  type: "LOG_OUT",
+});
 
 export const registerUser = (details) => {
-  return async  => {
+  return (async) => {
     try {
       const options = {
         headers: { "Content-Type": "application/json" },
@@ -51,19 +50,19 @@ export const registerUser = (details) => {
         body: JSON.stringify(details),
       };
       fetch(`${url}/register`, options)
-        .then(r => r.json())
-        .then(data => {
+        .then((r) => r.json())
+        .then((data) => {
           if (data.status == 200) {
-            alert(`Welcome ${data.username}, please log in`)
-            window.location ='/login'
+            alert(`Welcome ${data.username}, please log in`);
+            window.location = "/login";
           } else {
-            alert(data)
+            alert(data);
           }
         });
     } catch (err) {
       console.warn(err.message);
     }
-  }
+  };
 };
 
 export const logIn = (details) => {
@@ -126,25 +125,30 @@ export const getHistory = () => {
 };
 
 export const newShare = (order) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("user")}`,
-      },
-      method: "POST",
-      body: JSON.stringify(order),
-    };
-    fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("user")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(order),
+      };
+      fetch(`${url}/buy`, options)
+        .then((r) => r.json())
+        .then((data) => {
+          alert(data);
+          window.location = "/dashboard";
+        });
     } catch (err) {
       console.warn(err.message);
     }
-  }
+  };
 };
 
 export const updateShares = (order) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const options = {
         headers: {
@@ -154,15 +158,20 @@ export const updateShares = (order) => {
         method: "PATCH",
         body: JSON.stringify(order),
       };
-      fetch(`${url}/buy`, options).then(dispatch(getPortfolio()));
+      fetch(`${url}/buy`, options)
+        .then((r) => r.json())
+        .then((data) => {
+          alert(data);
+          window.location = "/dashboard";
+        });
     } catch (err) {
       console.warn(err.message);
     }
-  }
+  };
 };
 
 export const sellShare = (order) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const options = {
         headers: {
@@ -172,11 +181,16 @@ export const sellShare = (order) => {
         method: "PATCH",
         body: JSON.stringify(order),
       };
-      fetch(`${url}/sell`, options).then(dispatch(getPortfolio()));
+      fetch(`${url}/sell`, options)
+        .then((r) => r.json())
+        .then((data) => {
+          alert(data);
+          window.location = "/dashboard";
+        });
     } catch (err) {
       console.warn(err.message);
     }
-  }
+  };
 };
 
 export const getSearch = (ticker) => {
@@ -185,8 +199,13 @@ export const getSearch = (ticker) => {
       const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${token}`
       );
-      const searchResult = await response.json();
-      dispatch(addSearch(searchResult));
+      const responseStatus = await response.status;
+      if (responseStatus == 200) {
+        const searchResult = await response.json()
+        dispatch(addSearch(searchResult))
+      } else {
+        alert(`Stock '${ticker}' not found`)
+      }
     } catch (err) {
       console.warn(err.message);
     }
@@ -208,18 +227,22 @@ export const getHistoricPrices = (ticker, range = "1m") => {
 };
 
 export const getNews = (ticker) => {
-  return async dispatch =>{
+  return async (dispatch) => {
     try {
       const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/news/last?token=${token}`
       );
-      const news = await response.json()
-      dispatch(addNews(news))
+      const responseStatus = await response.status
+      if (responseStatus == 200) {
+        const news = await response.json();
+        console.log(news)
+        dispatch(addNews(news));
+      } 
     } catch (err) {
-      console.warn(err.message)
+      console.warn(err.message);
     }
-  }
-}
+  };
+};
 
 export const getAuthComparison = () => {
   return async (dispatch) => {
@@ -248,3 +271,20 @@ export const getUnauthComparison = () => {
     }
   };
 };
+
+export const resetPortfolio = () => {
+  return async dispatch => {
+    try {
+      const options = {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}`}
+      };
+      const response = await fetch(`${url}/reset`, options)
+      const confirmation = await response.json()
+      if (confirmation) {dispatch(getPortfolio())}
+      return confirmation
+    } catch (err) {
+      console.warn(err.message)
+    }
+  }
+}

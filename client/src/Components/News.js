@@ -14,6 +14,7 @@ class News extends React.Component {
     render() {
         return(
             <div id="news">
+                <h2>{this.props.news.length > 0 ? 'News' : ''}</h2>
                 {this.props.news ? this.renderNews(this.props.news) : ''}
             </div>
         )
