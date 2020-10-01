@@ -40,8 +40,8 @@ class AuthPreviewOthers extends React.Component {
                                     }
                                 ]
                             }} 
-                            // width={ 4 } 
-                            // height={ 2 } 
+                            // width={ 1 } 
+                            // height={ 1 } 
                             // options={{ maintainAspectRatio: false }}
                         ></HorizontalBar>
 
@@ -58,20 +58,20 @@ class AuthPreviewOthers extends React.Component {
                             )
                             }) }
                         </div>
-                        <Pie 
+                        {/* <Pie 
                             data={{
                                 labels: [
-                                    // user.stock_breakdown.map((stock) => {
-                                    //     return (`${ stock.name } (%)`)
-                                    // })
-                                    `${ user.stock_breakdown[0].name } (%)`, `${ user.stock_breakdown[1].name } (%)`
+                                    user.stock_breakdown.map((stock) => {
+                                        return (`${ stock.name } (%)`)
+                                    })
+                                    // `${ user.stock_breakdown[0].name } (%)`, `${ user.stock_breakdown[1].name } (%)`
                                 ],
                                 datasets: [{
                                     data: [
-                                        // user.stock_breakdown.map(stock => {
-                                        //     return stock.position * 100;
-                                        // })
-                                        this.roundDP(user.stock_breakdown[0].position, 2), this.roundDP(user.stock_breakdown[1].position, 2)
+                                        user.stock_breakdown.map(stock => {
+                                            return stock.position * 100;
+                                        })
+                                        // this.roundDP(user.stock_breakdown[0].position, 2), this.roundDP(user.stock_breakdown[1].position, 2)
                                     ],
                                     backgroundColor: [
                                     '#FF6384',
@@ -85,7 +85,7 @@ class AuthPreviewOthers extends React.Component {
                                     ]
                                 }]
                             }}
-                        ></Pie>
+                        ></Pie> */}
                     </div>
                 )
                 })}</div>
