@@ -100,7 +100,7 @@ def portfolio():
     equity_val = format_resp(equity)
     if len(equity_val) > 0:
         equity_round = round(equity_val[0]['sum'], 2)
-        stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': user_id})
+        stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1 ORDER BY name',{'1': user_id})
         stock_list = format_resp(stocks)
     else:
         equity_round = 0
