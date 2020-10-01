@@ -38,12 +38,15 @@ class Search extends React.Component {
             <>
                 <div id='search'>
                     <form onSubmit={this.handleSubmit}>
-                        <input type='text' onChange={this.handleInput} placeholder="TICKER"></input>
+
+                        <input required placeholder='TICKER' type='text' onChange={this.handleInput} maxLength="4"></input>
+
                         <input type='submit' value='Search' />
                     </form>
                 </div>
                 
                 { this.props.search.symbol ? <Stats /> : ''}
+
                 { this.props.search.symbol ? <Link to={{
                         pathname:'/dashboard/trade',
                         stock:{ 
@@ -52,6 +55,7 @@ class Search extends React.Component {
                     }}>TRADE
                 </Link> : '' }
                 <News />
+
             </>
         )
     }
