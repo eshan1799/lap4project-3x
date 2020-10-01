@@ -221,4 +221,4 @@ def reset():
     return jsonify('Account Reset')
 
 
-# app.run(debug=False)
+app.run(debug=False)
