@@ -26,13 +26,13 @@ class Search extends React.Component {
             <>
                 <div id='search'>
                     <form onSubmit={this.handleSubmit}>
-                        <input type='text' onChange={this.handleInput}></input>
+                        <input required placeholder='TICKER' type='text' onChange={this.handleInput}></input>
                         <input type='submit' value='Search' />
                     </form>
                 </div>
                 
                 { this.props.search.symbol ? <Stats /> : ''}
-                <News />
+                { this.props.search.symbol ? <News /> : ''}
             </>
         )
     }

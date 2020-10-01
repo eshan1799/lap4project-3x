@@ -138,8 +138,8 @@ export const newShare = (order) => {
       fetch(`${url}/buy`, options)
         .then((r) => r.json())
         .then((data) => {
-          alert(data)
-          window.location = '/dashboard'
+          alert(data);
+          window.location = "/dashboard";
         });
     } catch (err) {
       console.warn(err.message);
@@ -161,8 +161,8 @@ export const updateShares = (order) => {
       fetch(`${url}/buy`, options)
         .then((r) => r.json())
         .then((data) => {
-          alert(data)
-          window.location = '/dashboard'
+          alert(data);
+          window.location = "/dashboard";
         });
     } catch (err) {
       console.warn(err.message);
@@ -184,8 +184,8 @@ export const sellShare = (order) => {
       fetch(`${url}/sell`, options)
         .then((r) => r.json())
         .then((data) => {
-          alert(data)
-          window.location = '/dashboard'
+          alert(data);
+          window.location = "/dashboard";
         });
     } catch (err) {
       console.warn(err.message);
@@ -199,8 +199,13 @@ export const getSearch = (ticker) => {
       const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${token}`
       );
-      const searchResult = await response.json();
-      dispatch(addSearch(searchResult));
+      const responseStatus = await response.status;
+      if (responseStatus == 200) {
+        const searchResult = await response.json()
+        dispatch(addSearch(searchResult))
+      } else {
+        alert(`Stock '${ticker}' not found`)
+      }
     } catch (err) {
       console.warn(err.message);
     }
@@ -227,8 +232,12 @@ export const getNews = (ticker) => {
       const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/news/last?token=${token}`
       );
-      const news = await response.json();
-      dispatch(addNews(news));
+      const responseStatus = await response.status
+      if (responseStatus == 200) {
+        const news = await response.json();
+        console.log(news)
+        dispatch(addNews(news));
+      } 
     } catch (err) {
       console.warn(err.message);
     }

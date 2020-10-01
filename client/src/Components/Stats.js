@@ -5,7 +5,7 @@ class Stats extends React.Component {
     render() {
         return(
             <div id="stats">
-                <h4>Stats</h4>
+                <h3>{this.props.search.companyName} Stats</h3>
                 <h5>Latest Price: ${this.props.search.latestPrice}</h5>
                 <h5>Exchange: {this.props.search.primaryExchange}</h5>
                 <h5>Previous Close: ${this.props.search.previousClose}</h5>
