@@ -2,6 +2,7 @@ const url = "http://localhost:5000";
 const token = "pk_805248909bc94205989d68559f04fcb3";
 
 import "regenerator-runtime/runtime";
+import { trackPromise } from "react-promise-tracker";
 
 const addPortfolio = (portfolio) => ({
   type: "ADD_PORTFOLIO",
@@ -73,19 +74,21 @@ export const logIn = (details) => {
         method: "POST",
         body: JSON.stringify(details),
       };
-      fetch(`${url}/login`, options)
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.token) {
-            console.log(data.token);
-            localStorage.setItem("user", data.token);
-            window.location = `/dashboard`;
-            dispatch(getPortfolio());
-          } else {
-            console.log(data);
-            alert(data);
-          }
-        });
+      trackPromise(
+        fetch(`${url}/login`, options)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.token) {
+              console.log(data.token);
+              localStorage.setItem("user", data.token);
+              window.location = `/dashboard`;
+              dispatch(getPortfolio());
+            } else {
+              console.log(data);
+              alert(data);
+            }
+          })
+      );
     } catch (err) {
       console.warn(err.message);
     }
@@ -201,10 +204,10 @@ export const getSearch = (ticker) => {
       );
       const responseStatus = await response.status;
       if (responseStatus == 200) {
-        const searchResult = await response.json()
-        dispatch(addSearch(searchResult))
+        const searchResult = await response.json();
+        dispatch(addSearch(searchResult));
       } else {
-        alert(`Stock '${ticker}' not found`)
+        alert(`Stock '${ticker}' not found`);
       }
     } catch (err) {
       console.warn(err.message);
@@ -232,12 +235,12 @@ export const getNews = (ticker) => {
       const response = await fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/news/last?token=${token}`
       );
-      const responseStatus = await response.status
+      const responseStatus = await response.status;
       if (responseStatus == 200) {
         const news = await response.json();
-        console.log(news)
+        console.log(news);
         dispatch(addNews(news));
-      } 
+      }
     } catch (err) {
       console.warn(err.message);
     }
@@ -273,18 +276,20 @@ export const getUnauthComparison = () => {
 };
 
 export const resetPortfolio = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const options = {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${localStorage.getItem("user")}`}
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const response = await fetch(`${url}/reset`, options)
-      const confirmation = await response.json()
-      if (confirmation) {dispatch(getPortfolio())}
-      return confirmation
+      const response = await fetch(`${url}/reset`, options);
+      const confirmation = await response.json();
+      if (confirmation) {
+        dispatch(getPortfolio());
+      }
+      return confirmation;
     } catch (err) {
-      console.warn(err.message)
+      console.warn(err.message);
     }
-  }
-}
+  };
+};
