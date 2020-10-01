@@ -31,20 +31,30 @@ class LogIn extends React.Component {
             <>
                 <nav>
                     <NavLink to='/'>3X</NavLink>
-                    <NavLink to='/signup'>Sign Up</NavLink>
+                    <NavLink to='/'>Sign Up</NavLink>
                 </nav>
-                <h2>Login</h2>
-                <form onSubmit={this.handleSubmit}>
-                    <label htmlFor='username'>Username</label>
-                    <input required type='text' name="username" onChange={this.handleInput} autoFocus></input>
-                    <label htmlFor='password'>Password</label>
-                    <input required type='password' name="password" onChange={this.handleInput}></input>
-                    <input type='submit'></input>
-                </form>
+                <main>
+                    <h2>Login</h2>
+                    <form id="login-form" onSubmit={this.handleSubmit}>
+                        <label htmlFor='username'>Username</label>
+                        <input required type='text' name="username" onChange={this.handleInput} autoFocus></input>
+                        <label htmlFor='password'>Password</label>
+                        <input required type='password' name="password" onChange={this.handleInput}></input>
+                        <input type='submit' value='Log In'></input>
+                        <Link to='/signup'>
+                            Don't already have an account yet?
+                        </Link>
+                    </form>
+                    
+                </main>
+                <footer className='landing-footer'>
+                    <Link to='/unauthpreviewothers'>
+                        <button>See other users' portfolios</button>
+                    </Link>
+                </footer>
+                
 
-                <Link to='/signup'>
-                    Don't already have an account yet?
-                </Link>
+                
             </>
         )
     }
