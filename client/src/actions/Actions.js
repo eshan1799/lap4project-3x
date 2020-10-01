@@ -1,4 +1,4 @@
-const url = "http://localhost:5000";
+const url = "https://lastproject-3x.herokuapp.com";
 const token = "pk_805248909bc94205989d68559f04fcb3";
 
 import "regenerator-runtime/runtime";
