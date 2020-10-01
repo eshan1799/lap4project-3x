@@ -50,7 +50,16 @@ export const registerUser = (details) => {
         method: "POST",
         body: JSON.stringify(details),
       };
-      fetch(`${url}/register`, options);
+      fetch(`${url}/register`, options)
+        .then(r => r.json())
+        .then(data => {
+          if (data.status == 200) {
+            alert(`Welcome ${data.username}, please log in`)
+            window.location ='/login'
+          } else {
+            alert(data)
+          }
+        });
     } catch (err) {
       console.warn(err.message);
     }
