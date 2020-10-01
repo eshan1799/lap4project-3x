@@ -6,6 +6,8 @@ export { default as UnauthPreviewOthers } from '../UnauthPreviewOthers';
 export { default as Portfolio } from '../Portfolio';
 export { default as Stock } from '../Stock';
 export { default as Search } from '../Search';
+export { default as News } from '../News';
+export { default as Stats } from '../Stats';
 export { default as Trade } from '../Trade';
 export { default as TradeSearch } from '../TradeSearch';
 export { default as TradeOptions } from '../TradeOptions';
