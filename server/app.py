@@ -9,6 +9,7 @@ from passlib.hash import pbkdf2_sha256 as pw
 from flask_sqlalchemy import SQLAlchemy
 from helpers import format_resp
 from dotenv import load_dotenv
+import requests
 import os
 load_dotenv()
 
@@ -48,8 +49,9 @@ def register():
     response = format_resp(resultproxy)
     db.session.execute('INSERT INTO balance (user_id,balance) VALUES (:1, 10000)',{'1':response[0]['id']})
     db.session.commit()
+    resp = {'username': response[0]['username'], 'status': 200}
     
-    return jsonify(response[0]['username'])
+    return jsonify(resp)
 
 
 @app.route('/login', methods=['POST'])
@@ -62,7 +64,24 @@ def login():
         return jsonify('User Does Not Exist'),401
     else:
         if (pw.verify(details['password'], response[0]['hash'])):
-            token = create_access_token(identity=response[0]["id"],expires_delta=False)
+            token = create_access_token(identity=response[0]["id"], expires_delta=False)
+            
+            check_ticker={}
+            result_proxy = db.session.execute('SELECT id, ticker FROM portfolio WHERE user_id= :1',{'1':response[0]["id"]})
+            stocks = format_resp(result_proxy)
+            req_token = os.getenv("TOKEN")
+            for stock in stocks:
+                if (stock['ticker'] in check_ticker):
+                    db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': check_ticker[stock['ticker']] + 1, '2': stock['id']})
+                    db.session.commit()
+                else:
+                    response = requests.get(f"https://cloud.iexapis.com/stable/stock/{stock['ticker']}/quote?token={req_token}")
+                    response_dict = response.json()
+                    new_price = response_dict['latestPrice']
+                    db.session.execute('UPDATE portfolio SET price = :1 WHERE id = :2', {'1': new_price, '2': stock['id']})
+                    db.session.commit()
+                    check_ticker[stock['ticker']]=new_price
+ 
             return jsonify(token = token),200
         else:
             return jsonify("Password Incorrect"), 401
@@ -81,7 +100,7 @@ def portfolio():
     equity_val = format_resp(equity)
     if len(equity_val) > 0:
         equity_round = round(equity_val[0]['sum'], 2)
-        stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1',{'1': user_id})
+        stocks = db.session.execute('SELECT * FROM portfolio WHERE user_id = :1 ORDER BY name',{'1': user_id})
         stock_list = format_resp(stocks)
     else:
         equity_round = 0
@@ -117,7 +136,6 @@ def sell():
     user_id = get_jwt_identity()
     sell_order = request.get_json()
 
-    # if request.method == 'PATCH':
     db.session.execute('INSERT INTO history (user_id, ticker, action, shares, price) VALUES (:1, :2, :3, :4, :5)', {'1': user_id, '2': sell_order['ticker'], '3': 'sell', '4': float(sell_order['shares']), '5': sell_order['price']})
     db.session.execute('UPDATE portfolio SET shares = shares - :1, price = :2 WHERE user_id = :3 AND ticker = :4', {'1': float(sell_order['shares']), '2': sell_order['price'], '3': user_id, '4': sell_order['ticker']})
     db.session.execute('UPDATE balance SET balance = balance + :1 WHERE user_id = :2', {'1': (float(sell_order['shares']) * sell_order['price']), '2': user_id})
@@ -201,5 +219,6 @@ def reset():
     db.session.execute('DELETE FROM history WHERE user_id = :1', {'1': user_id})
     db.session.commit()
     return jsonify('Account Reset')
+
 
 app.run(debug=True)
