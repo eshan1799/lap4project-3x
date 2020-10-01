@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { News } from './index/index'
+import { News, Stats } from './index/index'
 import { getSearch, getHistoricPrices, getNews } from '../actions/Actions'
 
 class Search extends React.Component {
@@ -17,7 +17,7 @@ class Search extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault()
         this.props.newSearch(this.state.ticker)
-        this.props.newHistory(this.state.ticker)
+        // this.props.newHistory(this.state.ticker)
         this.props.newNews(this.state.ticker)
     }
 
@@ -31,14 +31,15 @@ class Search extends React.Component {
                     </form>
                 </div>
                 
-                {this.props.news ? <News /> : ''}
+                { this.props.search.symbol ? <Stats /> : ''}
+                <News />
             </>
         )
     }
 }
 
 const mSTP = state => ({
-    search: state.search,
+    search: state.searchResult,
     news: state.news
 })
 
