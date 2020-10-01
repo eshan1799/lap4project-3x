@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import { SignUp } from './index/index';
 
 class LandingPage extends React.Component {
     render() {
@@ -8,14 +9,25 @@ class LandingPage extends React.Component {
             <nav>
                 <NavLink to='/'>3X</NavLink>
                 <NavLink to='/login'>Log In</NavLink>
-                <NavLink to='/signup'>Sign Up</NavLink>
             </nav>
-            <h1>
-                LANDING PAGE
-            </h1>
-            <Link to='/unauthpreviewothers'>
-                <button>See other users' portfolios</button>
-            </Link>
+            <main id='landing-main'>
+                <div id='intro'>
+                    <h1>
+                        3X
+                    </h1>
+                    <p>
+                        Introductory para will go here
+                    </p>
+                </div>
+                <div id='signup'>
+                    <SignUp />
+                </div>
+            </main>
+            <footer className='landing-footer'>
+                <Link to='/unauthpreviewothers'>
+                    <button>See other users' portfolios</button>
+                </Link>
+            </footer>
             </>
         )
     }
