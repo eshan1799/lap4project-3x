@@ -271,3 +271,20 @@ export const getUnauthComparison = () => {
     }
   };
 };
+
+export const resetPortfolio = () => {
+  return async dispatch => {
+    try {
+      const options = {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}`}
+      };
+      const response = await fetch(`${url}/reset`, options)
+      const confirmation = await response.json()
+      if (confirmation) {dispatch(getPortfolio())}
+      return confirmation
+    } catch (err) {
+      console.warn(err.message)
+    }
+  }
+}
