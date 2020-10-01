@@ -28,16 +28,16 @@ class UnauthPreviewOthers extends React.Component {
                 return (
                     <div key={ index }>
                         <h2>User { index + 1 }</h2>
-                        <h4>Total Breakdown</h4>
-                        <p>Balance: { this.roundDP(user.balance, 2) }%</p>
-                        <p>Stock: { this.roundDP(user.stock, 2) }%</p>
+                        <h3>Total Breakdown:</h3>
+                        {/* <p>Balance: { this.roundDP(user.balance, 2) }%</p>
+                        <p>Stock: { this.roundDP(user.stock, 2) }%</p> */}
 
                         <HorizontalBar 
                             data={{
                                 labels: ['Cash (%)', 'Equity (%)'],
                                 datasets: [
                                     {
-                                    label: `User ${ index + 1 }'s Portfolio`,
+                                    label: `User ${ index + 1 }'s Cash & Equity Allocation`,
                                     backgroundColor: 'rgba(255,99,132,0.2)',
                                     borderColor: 'rgba(255,99,132,1)',
                                     borderWidth: 0.5,

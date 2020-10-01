@@ -21,7 +21,7 @@ class TradeSearch extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input required type='text' placeholder="TICKER" onChange={this.handleInput} maxLength="4"></input>
+                <input required type='text' placeholder="TICKER" onChange={this.handleInput} maxLength="5"></input>
                 <input type='submit'/>
             </form>
         )
