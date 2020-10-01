@@ -14,8 +14,8 @@ class Search extends React.Component {
         if (this.props.location.stock) {
             this.props.newSearch(this.props.location.stock.stock)
             //Uncomment for real historicStockPrices
-                //this.props.newHistory(this.props.location.stock.stock)
-                //this.props.newNews(this.props.location.stock.stock)
+                this.props.newHistory(this.props.location.stock.stock)
+                this.props.newNews(this.props.location.stock.stock)
         }
     }
 
@@ -47,61 +47,52 @@ class Search extends React.Component {
                     </form>
                 </div>
                 <div id='search-results'>
-                    <div id='search-upper'>
-                        { this.props.search.symbol ? <Stats /> : ''}
-                        { this.props.search.symbol ? <h1>graph here</h1> : ''}
+                    <div className='search-upper'>
+                        <div>
+                            { this.props.search.symbol ? <Stats /> : ''}
+                        </div>
+                        <div>
+                        { this.props.search.symbol ?
+
+                        <Line data={{
+                            // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+
+                            //Uncomment for real historicStockPrices
+                                labels: this.props.historicPrices.map(item => {
+                                    return item.label
+                                }),
+                            datasets: [{
+                                label: `${this.props.search.companyName} daily closing price`,
+                                fill: false,
+                                lineTension: 0.1,
+                                backgroundColor: 'rgba(75,192,192,0.4)',
+                                borderColor: 'rgba(75,192,192,1)',
+                                borderCapStyle: 'butt',
+                                borderDash: [],
+                                borderDashOffset: 0.0,
+                                borderJoinStyle: 'miter',
+                                pointBorderColor: 'rgba(75,192,192,1)',
+                                pointBackgroundColor: '#fff',
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                                pointHoverBorderColor: 'rgba(220,220,220,1)',
+                                pointHoverBorderWidth: 2,
+                                pointRadius: 1,
+                                pointHitRadius: 10,
+                                data:
+                                    //Uncomment for real historicStockPrices
+                                        this.props.historicPrices.map(pricePoint => {
+                                            return pricePoint.close;
+                                        })
+                                    // [1, 2, 3, 4, 5, 6, 7]
+                                }]
+                            }} />: '' }
+                        </div>
                     </div>
-                    
                     <News />
                 </div>
                 
-                { this.props.search.symbol ? <Stats /> : ''}
-
-                { this.props.search.symbol ?
-
-                <Line data={{
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-
-                    //Uncomment for real historicStockPrices
-                        // labels: this.props.historicPrices.map(item => {
-                        //     return item.label
-                        // }),
-                    datasets: [{
-                        label: `${this.props.search.companyName} daily closing price`,
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: 'rgba(75,192,192,0.4)',
-                        borderColor: 'rgba(75,192,192,1)',
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: 'rgba(75,192,192,1)',
-                        pointBackgroundColor: '#fff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                        pointHoverBorderColor: 'rgba(220,220,220,1)',
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data:
-                            //Uncomment for real historicStockPrices
-                                // this.props.historicPrices.map(pricePoint => {
-                                //     return pricePoint.close;
-                                // })
-                            [1, 2, 3, 4, 5, 6, 7]
-                    }]
-                }} />: '' }
-
-                { this.props.search.symbol ? <Link to={{
-                    pathname:'/dashboard/trade',
-                    stock:{ 
-                        stock: this.props.search.symbol
-                    }
-                }}>TRADE
-                </Link> : '' }
-                <News />
             </>
         )
     }
