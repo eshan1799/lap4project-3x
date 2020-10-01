@@ -11,7 +11,8 @@ class Trade extends React.Component {
     render() {
         return(
             <>
-            {this.props.search.symbol ? <TradeOptions /> : <TradeSearch />}
+            <TradeSearch />
+            {this.props.search.symbol ? <TradeOptions /> : ''}
             </>
         )
     }
