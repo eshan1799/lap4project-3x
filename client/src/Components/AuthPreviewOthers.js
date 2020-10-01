@@ -8,35 +8,41 @@ class AuthPreviewOthers extends React.Component {
         this.props.getComparison()
     }
 
-    roundDP(number, decimalPlaces) {
-        return (number * 100).toFixed(decimalPlaces);
+    roundDP(number) {
+        return (number * 100).toFixed(2);
     }
+
+    // getRandomColor() {
+    //     var letters = '0123456789ABCDEF';
+    //     var color = '#';
+    //     for (var i = 0; i < 6; i++) {
+    //       color += letters[Math.floor(Math.random() * 16)];
+    //     }
+    //     return color;
+    // }
 
     render() {
         return(
             <>
             <h1>Preview Users' Portfolios</h1>
-
             <div>{ this.props.comparison.map((user, index) => {
                 return (
                     <div key={ index }>
-                        <h2>Username: { user.username }</h2>
+                        <h2>User: { user.username }</h2>
                         <h3>Total Breakdown:</h3>
-                        <p>Cash: { this.roundDP(user.total_breakdown.balance, 2) }%</p>
-                        <p>Equity: { this.roundDP(user.total_breakdown.stock, 2) }%</p>
 
                         <HorizontalBar 
                             data={{
                                 labels: ['Cash (%)', 'Equity (%)'],
                                 datasets: [
                                     {
-                                    label: `${ user.username }'s Portfolio`,
+                                    label: `${ user.username }'s Cash & Equity Allocation`,
                                     backgroundColor: 'rgba(255,99,132,0.2)',
                                     borderColor: 'rgba(255,99,132,1)',
                                     borderWidth: 0.5,
                                     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                                     hoverBorderColor: 'rgba(255,99,132,1)',
-                                    data: [this.roundDP(user.total_breakdown.balance, 2), this.roundDP(user.total_breakdown.stock, 2)]
+                                    data: [this.roundDP(user.total_breakdown.balance), this.roundDP(user.total_breakdown.stock)]
                                     }
                                 ]
                             }} 
@@ -46,7 +52,7 @@ class AuthPreviewOthers extends React.Component {
                         ></HorizontalBar>
 
                         <h3>Portfolio</h3>
-                        <div>{ user.stock_breakdown.map((stock, stockIndex) => {
+                        {/* <div>{ user.stock_breakdown.map((stock, stockIndex) => {
                             return (
                                 <div key={ stockIndex }>
                                     <p>Name: { stock.name }</p>
@@ -57,22 +63,18 @@ class AuthPreviewOthers extends React.Component {
                                 </div>
                             )
                             }) }
-                        </div>
-                        {/* <Pie 
+                        </div> */}
+                        <Pie 
                             data={{
-                                labels: [
+                                labels:
                                     user.stock_breakdown.map((stock) => {
-                                        return (`${ stock.name } (%)`)
-                                    })
-                                    // `${ user.stock_breakdown[0].name } (%)`, `${ user.stock_breakdown[1].name } (%)`
-                                ],
+                                        return (`${ stock.name } (%)`);
+                                    }),
                                 datasets: [{
-                                    data: [
+                                    data:
                                         user.stock_breakdown.map(stock => {
-                                            return stock.position * 100;
-                                        })
-                                        // this.roundDP(user.stock_breakdown[0].position, 2), this.roundDP(user.stock_breakdown[1].position, 2)
-                                    ],
+                                            return this.roundDP(stock.position);
+                                        }),
                                     backgroundColor: [
                                     '#FF6384',
                                     '#36A2EB',
@@ -85,7 +87,8 @@ class AuthPreviewOthers extends React.Component {
                                     ]
                                 }]
                             }}
-                        ></Pie> */}
+                        ></Pie>
+                        {/* { console.log(this.getRandomColor()) } */}
                     </div>
                 )
                 })}</div>
