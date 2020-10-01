@@ -6,7 +6,7 @@ const initState = {
     portfolio: [],
     history: [],
     searchResult: {},
-    historicPrices: {},
+    historicPrices: [],
     news: [],
     comparison: []
 }
