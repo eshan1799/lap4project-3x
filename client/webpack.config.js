@@ -37,7 +37,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(), // update changed modules without page reload
     new HtmlWebpackPlugin({
       // add JavaScript code to the HTML
-      template: "../index.html",
+      template: "index.html",
       filename: "index.html",
       inject: "body",
     }),
