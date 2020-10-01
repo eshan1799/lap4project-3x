@@ -1,4 +1,4 @@
-build]
+[build]
     command = "npm run build" # how to trigger a build
     publish = "/dist" # what folder to publish 
 
