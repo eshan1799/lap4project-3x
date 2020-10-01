@@ -4,11 +4,7 @@ import { newShare, updateShares } from '../actions/Actions'
 
 class Buy extends React.Component {
     state = {
-            name: this.props.search.companyName,
-            exchange: this.props.search.primaryExchange,
-            ticker: this.props.search.symbol,
-            shares: 0,
-            price: this.props.search.latestPrice
+            shares: 0
     }
     
     handleInput = (e) => {
@@ -19,10 +15,18 @@ class Buy extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        if (this.props.portfolio.find(pos => pos['ticker'] == this.state.ticker)) {
-            this.props.updatePos(this.state)
+        const order = {
+            name: this.props.search.companyName,
+            exchange: this.props.search.primaryExchange,
+            ticker: this.props.search.symbol,
+            price: this.props.search.latestPrice,
+            shares: this.state.shares
+        }
+
+        if (this.props.portfolio.find(pos => pos['ticker'] == this.props.search.symbol)) {
+            this.props.updatePos(order)
         } else {
-            this.props.buyNew(this.state)
+            this.props.buyNew(order)
         }
     }
 

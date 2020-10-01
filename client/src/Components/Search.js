@@ -46,6 +46,14 @@ class Search extends React.Component {
                         <input type='submit' value='Search' />
                     </form>
                 </div>
+                <div id='search-results'>
+                    <div id='search-upper'>
+                        { this.props.search.symbol ? <Stats /> : ''}
+                        { this.props.search.symbol ? <h1>graph here</h1> : ''}
+                    </div>
+                    
+                    <News />
+                </div>
                 
                 { this.props.search.symbol ? <Stats /> : ''}
 
@@ -94,7 +102,6 @@ class Search extends React.Component {
                 }}>TRADE
                 </Link> : '' }
                 <News />
-
             </>
         )
     }

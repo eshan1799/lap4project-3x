@@ -14,6 +14,7 @@ class SignUp extends React.Component {
             this.props.signUp(this.state.details)
         } else {
             alert('Passwords don\'t match!')
+            e.target.reset()
         }
         
       }
@@ -27,10 +28,6 @@ class SignUp extends React.Component {
     render() {
         return (
             <>
-            <nav>
-                <NavLink to='/'>3X</NavLink>
-                <NavLink to='/login'>Log In</NavLink>
-            </nav>
             <h2>Register</h2>
             <form onSubmit={ this.handleSubmit }>
                 <label htmlFor='username'>Username</label>
@@ -41,7 +38,7 @@ class SignUp extends React.Component {
                 <input required type='password' name="confirm" onChange={ this.handleInput }required></input>
                 <label htmlFor='email'>Email</label>
                 <input required type='email' name='email' onChange={ this.handleInput} required></input>
-                <input type='submit'></input>
+                <input type='submit' value='Sign Up'></input>
             </form>
             <Link to='/login'>
                 Already have an account?

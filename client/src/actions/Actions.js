@@ -2,6 +2,7 @@ const url = "http://localhost:5000";
 const token = "pk_805248909bc94205989d68559f04fcb3";
 
 import "regenerator-runtime/runtime";
+import { trackPromise } from "react-promise-tracker";
 
 const addPortfolio = (portfolio) => ({
   type: "ADD_PORTFOLIO",
@@ -49,16 +50,18 @@ export const registerUser = (details) => {
         method: "POST",
         body: JSON.stringify(details),
       };
-      fetch(`${url}/register`, options)
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.status == 200) {
-            alert(`Welcome ${data.username}, please log in`);
-            window.location = "/login";
-          } else {
-            alert(data);
-          }
-        });
+      trackPromise(
+        fetch(`${url}/register`, options)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.status == 200) {
+              alert(`Welcome ${data.username}, please log in`);
+              window.location = "/login";
+            } else {
+              alert(data);
+            }
+          })
+      );
     } catch (err) {
       console.warn(err.message);
     }
@@ -73,19 +76,21 @@ export const logIn = (details) => {
         method: "POST",
         body: JSON.stringify(details),
       };
-      fetch(`${url}/login`, options)
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.token) {
-            console.log(data.token);
-            localStorage.setItem("user", data.token);
-            window.location = `/dashboard`;
-            dispatch(getPortfolio());
-          } else {
-            console.log(data);
-            alert(data);
-          }
-        });
+      trackPromise(
+        fetch(`${url}/login`, options)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.token) {
+              console.log(data.token);
+              localStorage.setItem("user", data.token);
+              window.location = `/dashboard`;
+              dispatch(getPortfolio());
+            } else {
+              console.log(data);
+              alert(data);
+            }
+          })
+      );
     } catch (err) {
       console.warn(err.message);
     }
@@ -99,7 +104,7 @@ export const getPortfolio = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const response = await fetch(`${url}/portfolio`, options);
+      const response = await trackPromise(fetch(`${url}/portfolio`, options));
       const portfolio = await response.json();
       dispatch(addPortfolio(portfolio));
     } catch (err) {
@@ -115,7 +120,7 @@ export const getHistory = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const response = await fetch(`${url}/history`, options);
+      const response = await trackPromise(fetch(`${url}/history`, options));
       const history = await response.json();
       dispatch(addHistory(history));
     } catch (err) {
@@ -135,12 +140,14 @@ export const newShare = (order) => {
         method: "POST",
         body: JSON.stringify(order),
       };
-      fetch(`${url}/buy`, options)
-        .then((r) => r.json())
-        .then((data) => {
-          alert(data);
-          window.location = "/dashboard";
-        });
+      trackPromise(
+        fetch(`${url}/buy`, options)
+          .then((r) => r.json())
+          .then((data) => {
+            alert(data);
+            window.location = "/dashboard";
+          })
+      );
     } catch (err) {
       console.warn(err.message);
     }
@@ -158,12 +165,14 @@ export const updateShares = (order) => {
         method: "PATCH",
         body: JSON.stringify(order),
       };
-      fetch(`${url}/buy`, options)
-        .then((r) => r.json())
-        .then((data) => {
-          alert(data);
-          window.location = "/dashboard";
-        });
+      trackPromise(
+        fetch(`${url}/buy`, options)
+          .then((r) => r.json())
+          .then((data) => {
+            alert(data);
+            window.location = "/dashboard";
+          })
+      );
     } catch (err) {
       console.warn(err.message);
     }
@@ -181,12 +190,14 @@ export const sellShare = (order) => {
         method: "PATCH",
         body: JSON.stringify(order),
       };
-      fetch(`${url}/sell`, options)
-        .then((r) => r.json())
-        .then((data) => {
-          alert(data);
-          window.location = "/dashboard";
-        });
+      trackPromise(
+        fetch(`${url}/sell`, options)
+          .then((r) => r.json())
+          .then((data) => {
+            alert(data);
+            window.location = "/dashboard";
+          })
+      );
     } catch (err) {
       console.warn(err.message);
     }
@@ -196,15 +207,15 @@ export const sellShare = (order) => {
 export const getSearch = (ticker) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
+      const response = await trackPromise(fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${token}`
-      );
+      ));
       const responseStatus = await response.status;
       if (responseStatus == 200) {
-        const searchResult = await response.json()
-        dispatch(addSearch(searchResult))
+        const searchResult = await response.json();
+        dispatch(addSearch(searchResult));
       } else {
-        alert(`Stock '${ticker}' not found`)
+        alert(`Stock '${ticker}' not found`);
       }
     } catch (err) {
       console.warn(err.message);
@@ -215,9 +226,9 @@ export const getSearch = (ticker) => {
 export const getHistoricPrices = (ticker, range = "1m") => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
+      const response = await trackPromise(fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/chart/${range}?token=${token}`
-      );
+      ));
       const historicPrices = await response.json();
       dispatch(addHistoricPrices(historicPrices));
     } catch (err) {
@@ -229,15 +240,15 @@ export const getHistoricPrices = (ticker, range = "1m") => {
 export const getNews = (ticker) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
+      const response = await trackPromise(fetch(
         `https://cloud.iexapis.com/stable/stock/${ticker}/news/last?token=${token}`
-      );
-      const responseStatus = await response.status
+      ));
+      const responseStatus = await response.status;
       if (responseStatus == 200) {
         const news = await response.json();
-        console.log(news)
+        console.log(news);
         dispatch(addNews(news));
-      } 
+      }
     } catch (err) {
       console.warn(err.message);
     }
@@ -251,7 +262,7 @@ export const getAuthComparison = () => {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const response = await fetch(`${url}/compare_auth`, options);
+      const response = await trackPromise(fetch(`${url}/compare_auth`, options));
       const authComparison = await response.json();
       dispatch(addComparison(authComparison));
     } catch (err) {
@@ -263,7 +274,7 @@ export const getAuthComparison = () => {
 export const getUnauthComparison = () => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`${url}/compare_unauth`);
+      const response = await trackPromise(fetch(`${url}/compare_unauth`));
       const unauthComparison = await response.json();
       dispatch(addComparison(unauthComparison));
     } catch (err) {
@@ -273,18 +284,20 @@ export const getUnauthComparison = () => {
 };
 
 export const resetPortfolio = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const options = {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${localStorage.getItem("user")}`}
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${localStorage.getItem("user")}` },
       };
-      const response = await fetch(`${url}/reset`, options)
-      const confirmation = await response.json()
-      if (confirmation) {dispatch(getPortfolio())}
-      return confirmation
+      const response = await trackPromise(fetch(`${url}/reset`, options));
+      const confirmation = await response.json();
+      if (confirmation) {
+        dispatch(getPortfolio());
+      }
+      return confirmation;
     } catch (err) {
-      console.warn(err.message)
+      console.warn(err.message);
     }
-  }
-}
+  };
+};

@@ -4,9 +4,7 @@ import { sellShare } from '../actions/Actions'
 
 class Sell extends React.Component {
     state = {
-            ticker: this.props.search.symbol,
-            shares: 0,
-            price: this.props.search.latestPrice
+            shares: 0
     }
     
     handleInput = (e) => {
@@ -17,8 +15,15 @@ class Sell extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        if (this.props.portfolio.find(pos => pos['ticker'] == this.state.ticker)) {
-            this.props.sellOrder(this.state)
+        const order = {
+            name: this.props.search.companyName,
+            exchange: this.props.search.primaryExchange,
+            ticker: this.props.search.symbol,
+            price: this.props.search.latestPrice,
+            shares: this.state.shares
+        }
+        if (this.props.portfolio.find(pos => pos['ticker'] == this.props.search.symbol)) {
+            this.props.sellOrder(order)
         } else {
             alert('You do not own this stock')
         }
@@ -28,7 +33,7 @@ class Sell extends React.Component {
         return(
             <>
              <form onSubmit={this.handleSubmit}>
-                 <input required type='number' max={this.props.portfolio.find(pos => pos['ticker'] == this.state.ticker) ? this.props.portfolio.find(pos => pos['ticker'] == this.state.ticker)['shares'] : 0} min="0.2" step="0.2" onChange={this.handleInput}></input>
+                 <input required type='number' max={this.props.portfolio.find(pos => pos['ticker'] == this.props.search.symbol) ? this.props.portfolio.find(pos => pos['ticker'] == this.props.search.symbol)['shares'] : 0} min="0.2" step="0.2" onChange={this.handleInput}></input>
                  <input type='submit' value='SELL'/>
              </form>
             </>
