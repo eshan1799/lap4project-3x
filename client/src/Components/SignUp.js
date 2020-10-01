@@ -14,6 +14,7 @@ class SignUp extends React.Component {
             this.props.signUp(this.state.details)
         } else {
             alert('Passwords don\'t match!')
+            e.target.reset()
         }
         
       }
