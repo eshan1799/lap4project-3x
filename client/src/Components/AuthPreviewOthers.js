@@ -37,50 +37,75 @@ class AuthPreviewOthers extends React.Component {
             <div>{ this.props.comparison.map((user, index) => {
                 return (
                     <div key={ index }>
-                        <h3>{ user.username }</h3>
-                        <h3>Asset Class Breakdown:</h3>
+                        <h2 className='lefth2'>{ user.username }</h2>
+                        <div className='user-breakdowns'>
+                            <div> 
+                                <h3>Asset Class Breakdown:</h3>
 
-                        <HorizontalBar 
-                            data={{
-                                labels: ['Cash (%)', 'Equity (%)'],
-                                datasets: [
-                                    {
-                                    label: `${ user.username }'s Cash & Equity Allocation`,
-                                    backgroundColor: 'rgba(111, 179, 184, 1)',
-                                    borderColor: 'rgba(56, 128, 135, 1)',
-                                    borderWidth: 0.5,
-                                    hoverBackgroundColor: 'rgba(186, 223, 231, 1)',
-                                    hoverBorderColor: 'rgba(255,99,132,1)',
-                                    data: [this.roundDP(user.total_breakdown.balance), this.roundDP(user.total_breakdown.stock), 0]
-                                    }
-                                ]
-                            }} 
-                        ></HorizontalBar>
-
-                        <h3 className='padding'>Portfolio Breakdown:</h3>
-                        <Pie 
-                            data={{
-                                labels:
-                                    user.stock_breakdown.map((stock) => {
-                                        if(stock.position != 0) {
-                                            return (`${ stock.name } (%)`);
-                                        }
-                                        else { return '' }
-                                    }),
-                                    // user.stock_breakdown.reduce()
-
-                                datasets: [{
-                                    data:
-                                        user.stock_breakdown.map(stock => {
-                                            // if(stock.position != 0) {
-                                                return this.roundDP(stock.position);
-                                            // }
-                                        }),
-                                    backgroundColor: this.pieBackgroundColours,
-                                }]
-                            }}
-                        ></Pie>
-                        <hr />
+                                <HorizontalBar 
+                                    data={{
+                                        labels: ['Cash (%)', 'Equity (%)'],
+                                        datasets: [
+                                            {
+                                            label: `${ user.username }'s Cash & Equity Allocation`,
+                                            backgroundColor: 'rgba(111, 179, 184, 1)',
+                                            borderColor: 'rgba(56, 128, 135, 1)',
+                                            borderWidth: 0.5,
+                                            hoverBackgroundColor: 'rgba(186, 223, 231, 1)',
+                                             hoverBorderColor: 'rgba(255,99,132,1)',
+                                            data: [this.roundDP(user.total_breakdown.balance), this.roundDP(user.total_breakdown.stock)]
+                                            }
+                                        ]
+                                    }} 
+                                    // width={ 1 } 
+                                    // height={ 1 } 
+                                    // options={{ maintainAspectRatio: false }}
+                                ></HorizontalBar>
+                            </div>
+                            
+                            <div>
+                                <h3>Portfolio</h3>
+                                {/* <div>{ user.stock_breakdown.map((stock, stockIndex) => {
+                                    return (
+                                        <div key={ stockIndex }>
+                                            <p>Name: { stock.name }</p>
+                                            <p>Ticker: { stock.ticker }</p>
+                                            <p>Exchange: { stock.exchange }</p>
+                                            <p>Position: { this.roundDP(stock.position, 2) }%</p>
+                                            <br />
+                                        </div>
+                                    )
+                                    }) }
+                                </div> */}
+                                <Pie 
+                                    data={{
+                                        labels:
+                                            user.stock_breakdown.map((stock) => {
+                                                return (`${ stock.name } (%)`);
+                                            }),
+                                        datasets: [{
+                                            data:
+                                                user.stock_breakdown.map(stock => {
+                                                    return this.roundDP(stock.position);
+                                                }),
+                                            backgroundColor: [
+                                            '#FF6384',
+                                            '#36A2EB',
+                                            '#FFCE56'
+                                            ],
+                                            hoverBackgroundColor: [
+                                            '#FF6384',
+                                            '#36A2EB',
+                                            '#FFCE56'
+                                            ]
+                                        }]
+                                    }}
+                                ></Pie>
+                                  
+                            </div>
+<hr />
+                        </div>
+                        {/* { console.log(this.getRandomColor()) } */}
                     </div>
                 )
                 })}</div>

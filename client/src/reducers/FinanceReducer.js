@@ -26,7 +26,7 @@ const FinanceReducer = (state = initState, action) => {
         case 'ADD_COMPARISON':
             return { ...state, comparison: action.payload }
         case 'CLEAR_SEARCH':
-            return { ...state, searchResult: {}, historicPrices: {}, news: []}
+            return { ...state, searchResult: {}, historicPrices: [], news: []}
         case 'LOG_OUT':
             return state = initState
         default:

@@ -11,17 +11,17 @@ const LoadingIndicator = (props) => {
   const { promiseInProgress } = usePromiseTracker();
   return (
     promiseInProgress && (
-      <div
-        style={{
-          width: "100%",
-          height: "100",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 5 
-        }}
+      <div className='loading-buttons'
+        // style={{
+        //   width: "100%",
+        //   height: "100",
+        //   display: "flex",
+        //   justifyContent: "center",
+        //   alignItems: "center",
+        //   zIndex: 5 
+        // }}
       >
-        <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
+        <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" style={{zIndex: '5'}}/>
       </div>
     )
   );

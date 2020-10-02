@@ -267,7 +267,7 @@ hr {
   display: grid;
 }
 
-#search-upper {
+.search-upper {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -275,4 +275,18 @@ hr {
 #news {
   height: 400px;
   overflow: scroll;
+}
+
+.user-breakdowns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.loading-buttons {
+    width: "100%";
+    height: "100";
+    display: "flex";
+    justify-content: "center";
+    align-items: "center";
+    z-index: 5; 
 }
