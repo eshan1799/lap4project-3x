@@ -88,16 +88,8 @@ class AuthPreviewOthers extends React.Component {
                                                 user.stock_breakdown.map(stock => {
                                                     return this.roundDP(stock.position);
                                                 }),
-                                            backgroundColor: [
-                                            '#FF6384',
-                                            '#36A2EB',
-                                            '#FFCE56'
-                                            ],
-                                            hoverBackgroundColor: [
-                                            '#FF6384',
-                                            '#36A2EB',
-                                            '#FFCE56'
-                                            ]
+                                            backgroundColor: this.pieBackgroundColours,
+                                            hoverBackgroundColor: this.pieBackgroundColours
                                         }]
                                     }}
                                 ></Pie>
