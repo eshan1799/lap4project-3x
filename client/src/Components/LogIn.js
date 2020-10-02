@@ -28,11 +28,11 @@ class LogIn extends React.Component {
         }
 
         return (
-            <section class='wholeSection'>
+            <section className='wholeSection'>
                 <nav>
                     <NavLink className='threeX' to='/'>3X</NavLink>
                 </nav>
-                <main className='loginCentre' class='centre'>
+                <main className='loginCentre' className='centre'>
                     <h2 className='loginRegisterH2'>Login</h2>
                     <form onSubmit={this.handleSubmit}>
                         <label htmlFor='username'>Username</label>
@@ -41,7 +41,7 @@ class LogIn extends React.Component {
                         <input required type='password' name="password" onChange={this.handleInput}></input>
                         <div className='centre'>
                             <input className='buttons' type='submit' value='Log In'></input>
-                            <Link class='classicLink' to='/signup'>
+                            <Link className='classicLink' to='/signup'>
                                 Don't already have an account yet?
                             </Link>
                         </div>
@@ -49,11 +49,11 @@ class LogIn extends React.Component {
                 </main>
                 <div>
                     <NavLink className='nav' to='/signup'>
-                        <button className='buttons'>Register</button>
+                        <button className='homepageButtons'>Register</button>
                     </NavLink>
                     <footer className='end'>
                         <Link to='/unauthpreviewothers'>
-                            <button className='buttons'>User Portfolios</button>
+                            <button className='homepageButtons'>User Portfolios</button>
                         </Link>
                     </footer>
                 </div>  

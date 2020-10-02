@@ -27,11 +27,11 @@ class SignUp extends React.Component {
 
     render() {
         return (
-            <section class='wholeSection'>
+            <section className='wholeSection'>
                 <nav>
                     <NavLink className='threeX' to='/'>3X</NavLink>
                 </nav>
-                <main className='loginCentre' class='centre'>
+                <main className='loginCentre' className='centre'>
                 <h2 id='registerH2' className='loginRegisterH2'>Register</h2>
                 <form onSubmit={ this.handleSubmit }>
                     <label htmlFor='username'>Username</label>
@@ -43,20 +43,20 @@ class SignUp extends React.Component {
                     <label htmlFor='email'>Email</label>
                     <input required type='email' name='email' onChange={ this.handleInput} required></input>
                     <div className='centre'>
-                        <input class='buttons' type='submit' value='Sign Up'></input>
+                        <input className='buttons' type='submit' value='Sign Up'></input>
                     </div>
                 </form>
-                <Link class='classicLink' to='/login'>
+                <Link className='classicLink' to='/login'>
                     Already have an account?
                 </Link>
                 </main>
                 <div>
                     <NavLink className='nav' to='/login'>
-                        <button className='buttons'>Login</button>
+                        <button className='homepageButtons'>Login</button>
                     </NavLink>
                     <footer className='end'>
                         <Link to='/unauthpreviewothers'>
-                            <button className='buttons'>User Portfolios</button>
+                            <button className='homepageButtons'>User Portfolios</button>
                         </Link>
                     </footer>
                 </div>  

@@ -6,17 +6,19 @@ class LandingPage extends React.Component {
     render() {
         return (
             <div className='wholeSection'>
-                <div id='flex'>
+                {/* <div id='flex'> */}
+                <div>
                     <Link to='/login'>
-                        <button className='buttons'>Login</button>
+                        <button className='homepageButtons'>Login</button>
                     </Link>
+                </div>
                     {/* <Link to='/signup'>
                         <button className='landingPageButtons'>Register</button>
                     </Link>
                     <Link to='/unauthpreviewothers'>
                             <button className='buttons'>User Portfolios</button>
                     </Link> */}
-                </div>
+                {/* </div> */}
                 <div id='marginTop65px' className='centre'>
                     <div id='title'>
                         <h1 className='landingHeaders'>3X</h1>
@@ -30,9 +32,11 @@ class LandingPage extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <Link to='/signup'>
-                        <button className='buttons'>Register</button>
-                    </Link>
+                    <div>
+                        <Link to='/signup'>
+                            <button className='homepageButtons'>Register</button>
+                        </Link>
+                    </div>
                     <div className='end'>
                         {/* <Link to='/unauthpreviewothers'>
                             <button className='buttons'>User Portfolios</button>

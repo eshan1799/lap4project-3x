@@ -18,7 +18,7 @@ class UnauthPreviewOthers extends React.Component {
         return(
             <>
             <nav>
-                <NavLink class='threeX' to='/'>3X</NavLink>
+                <NavLink className='threeX' to='/'>3X</NavLink>
                 <NavLink to='/login'>
                     <button className='buttons'>Log In</button>
                 </NavLink>
