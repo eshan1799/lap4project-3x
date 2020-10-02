@@ -34,9 +34,9 @@ class LandingPage extends React.Component {
                         <button className='buttons'>Register</button>
                     </Link>
                     <div className='end'>
-                        <Link to='/unauthpreviewothers'>
+                        {/* <Link to='/unauthpreviewothers'>
                             <button className='buttons'>User Portfolios</button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </div>

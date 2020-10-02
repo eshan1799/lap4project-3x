@@ -47,7 +47,7 @@ body {
   align-items: center;
 }
 
-#marginTop65px { margin-top: 65px; }
+#marginTop65px { margin-top: 6%; }
 
 /* th {
   border-right: 1px solid black;
@@ -79,6 +79,8 @@ body {
 #title {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 h1 {
