@@ -17,13 +17,13 @@ class UnauthPreviewOthers extends React.Component {
     render() {
         return(
             <>
-            <nav>
-                <NavLink className='threeX' to='/'>3X</NavLink>
+            <nav className='spaceBetween'>
+                <NavLink to='/'>Back</NavLink>
                 <NavLink to='/login'>
-                    <button className='buttons'>Log In</button>
+                        Log In
                 </NavLink>
                 <NavLink to='/signup'>
-                    <button className='buttons'>Register</button>
+                    Register
                 </NavLink>
             </nav>
             <h2>Preview Users' Portfolios</h2>
@@ -55,7 +55,7 @@ class UnauthPreviewOthers extends React.Component {
                         </HorizontalBar>
                         <p>.</p>
                         <div className='centre'>
-                            <hr />
+                            <hr className='hrCenter'/>
                         </div>
                     </div>
                 )

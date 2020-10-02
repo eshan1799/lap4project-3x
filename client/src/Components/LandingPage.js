@@ -19,8 +19,13 @@ class LandingPage extends React.Component {
                             <button className='buttons'>User Portfolios</button>
                     </Link> */}
                 {/* </div> */}
-                <div id='marginTop65px' className='centre'>
-                    <div id='title'>
+                <div className='centre'>
+                    <div>
+                        <Link to='/unauthpreviewothers'>
+                            <button id='preview' className='homepageButtons'>Preview Users</button>
+                        </Link>
+                    </div>
+                    <div className='marginTop65px' id='title'>
                         <h1 className='landingHeaders'>3X</h1>
                         <h1 className='landingHeaders'>{ '{ FREE' }</h1>
                         <h1 className='landingHeaders'>{ 'EXCHANGE }'}</h1>
@@ -37,7 +42,7 @@ class LandingPage extends React.Component {
                             <button className='homepageButtons'>Register</button>
                         </Link>
                     </div>
-                    <div className='end'>
+                    <div>
                         {/* <Link to='/unauthpreviewothers'>
                             <button className='buttons'>User Portfolios</button>
                         </Link> */}

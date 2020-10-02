@@ -14,6 +14,7 @@ class Dashboard extends React.Component {
         this.props.logOff()
     }
 
+    
     render() {
         return (
             <>
@@ -32,6 +33,7 @@ class Dashboard extends React.Component {
                             <h3>Cash: ${ this.props.cash }</h3>
                             <h3>Equity: ${ this.props.equity }</h3>
                             <h3>Balance: ${ this.props.balance }</h3>
+                            <h3>Performance: { (this.props.balance/10000) - 1 }%</h3>
                         </div>
                     </div>
                     <Switch>

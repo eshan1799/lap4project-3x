@@ -55,9 +55,9 @@ class SignUp extends React.Component {
                         <button className='homepageButtons'>Login</button>
                     </NavLink>
                     <footer className='end'>
-                        <Link to='/unauthpreviewothers'>
+                        {/* <Link to='/unauthpreviewothers'>
                             <button className='homepageButtons'>User Portfolios</button>
-                        </Link>
+                        </Link> */}
                     </footer>
                 </div>  
             </section>

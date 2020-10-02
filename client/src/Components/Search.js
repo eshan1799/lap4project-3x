@@ -38,10 +38,10 @@ class Search extends React.Component {
     render() {
         return(
             <>
-                <div id='search'>
-                    <form onSubmit={this.handleSubmit}>
-
-                        <input required placeholder='TICKER' type='text' onChange={this.handleInput} maxLength="4"></input>
+                <div className='search'>
+                    <form className='search-form' onSubmit={this.handleSubmit}>
+                        <br />
+                        <input required placeholder='TICKER' type='text' onChange={this.handleInput} maxLength="4" autoFocus></input>
 
                         <input className='buttons' type='submit' value='Search' />
                     </form>

@@ -40,7 +40,7 @@ class AuthPreviewOthers extends React.Component {
                         <h2 className='lefth2'>{ user.username }</h2>
                         <div className='user-breakdowns'>
                             <div> 
-                                <h3>Asset Class Breakdown:</h3>
+                                <h3>Asset Class Breakdown</h3>
 
                                 <HorizontalBar 
                                     data={{
@@ -95,9 +95,8 @@ class AuthPreviewOthers extends React.Component {
                                 ></Pie>
                                   
                             </div>
-<hr />
                         </div>
-                        {/* { console.log(this.getRandomColor()) } */}
+                        <hr className='hrCenter' />
                     </div>
                 )
                 })}</div>

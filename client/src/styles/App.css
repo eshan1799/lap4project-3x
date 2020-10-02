@@ -47,7 +47,9 @@ body {
   align-items: center;
 }
 
-#marginTop65px { margin-top: 7%; }
+.marginTop65px { margin-top: 7%; }
+
+#preview { width: 76%; }
 
 /* th {
   border-right: 1px solid black;
@@ -56,6 +58,20 @@ body {
   height: 0%;
   text-align: center;
 } */
+
+.hr {
+  width:100%; 
+  margin: 30px 20px;
+  border: 1px solid black;
+}
+
+.hrCenter {
+  /* display: inline;
+  text-align: right; */
+  width: 90%;
+  margin: 60px 30px;
+  border: 1px solid black;
+}
 
 #loginCentre {
   display: flex;
@@ -92,9 +108,9 @@ h1 {
   color: var(--lighter-blue);
 }
 
-h1:hover { opacity: 60%; }
+h1:hover, .hover:hover { opacity: 60%; }
 
-h1:hover, p:hover { cursor: default; }
+h1:hover, h2:hover, h3:hover, h4:hover, label:hover, p:hover { cursor: default; }
 .buttons:hover { cursor: pointer }
 .buttons:focus { outline: none }
 
@@ -154,6 +170,22 @@ h1:hover, p:hover { cursor: default; }
   transition: background-color .5s;
 }
 
+table {
+  margin: 20px 20px;
+}
+
+.margin {
+  margin: 0px 20px;
+}
+
+/* td {
+  margin: 20px 20px;
+}
+
+tr {
+  margin: 20px 20px;
+} */
+
 .homepageButtons:hover {
   background-color: var(--block-blue);
   color: white;
@@ -177,7 +209,7 @@ input {
   border: 1px solid var(--block-blue);
   font-size: 16px;
   height: 35px;
-  margin: 20px 20px;
+  margin: 30px 30px;
   padding: 10px 15px;
   color: black;
   border-radius: 2px;
@@ -223,6 +255,21 @@ a {
   justify-content: center;
 }
 
+#h2trade {
+  margin-bottom: 20px;
+}
+
+.headline {
+  font-size: 18px;
+  /* margin-bottom: 100px; */
+}
+
+.bold { font-weight: bold; }
+
+.tableMargin {
+  margin: 0px 100px;
+}
+
 h2 {
   text-align: center;
   margin-bottom: 20px;
@@ -233,6 +280,14 @@ h2 {
   text-align: left;
   margin-left: 20px;
   margin-bottom: 50px;
+}
+
+.smallerh2 {
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 50px;
+  font-size: 20px;
+  color: var(--block-blue);
 }
 
 .padding {
@@ -289,4 +344,44 @@ hr {
     justify-content: "center";
     align-items: "center";
     z-index: 5; 
+}
+
+.stock-container {
+  height: 50vh;
+  overflow-y: scroll;
+}
+
+#portfolio {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: 1fr;
+  margin: 10px;  
+}
+
+.stock {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  justify-content: center
+}
+
+.searchColumn {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.history-result {
+  display: flex;
+  flex-direction: row;
 }

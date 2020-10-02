@@ -12,22 +12,32 @@ class TradeOptions extends React.Component {
     render() {
         return (
             <>
-                <h3>{this.props.search.companyName}</h3>
-                <h3>Quote: ${this.props.search.latestPrice ? this.props.search.latestPrice : 'loading'}</h3>
-                <NavLink to='/dashboard/trade/buy'>Buy</NavLink>
-                <NavLink to='/dashboard/trade/sell'>Sell</NavLink>
-                <Switch>
-                    <Route path='/dashboard/trade/buy' component={ Buying }/>
-                    <Route path='/dashboard/trade/sell' component={ Sell }/>
-                </Switch>
-                { this.props.search.symbol ? <Link to={{
+            <div className='searchColumn'>
+                <h2 id='h2trade' className='lefth2'>{this.props.search.companyName}</h2><br />
+                <div>
+                <h3>Quote: ${this.props.search.latestPrice ? this.props.search.latestPrice : 'loading'}</h3> <br />
+                <NavLink className='margin' to='/dashboard/trade/buy'>Buy</NavLink>
+                <NavLink className='margin' to='/dashboard/trade/sell'>Sell</NavLink>
+                { this.props.search.symbol ? <Link className='margin' to={{
                         pathname:'/dashboard/search',
                         stock:{ 
                             stock: this.props.search.symbol
                         }
                     }}>More Info
                 </Link> : '' }
-
+                </div>
+                <Switch>
+                    <Route path='/dashboard/trade/buy' component={ Buying }/>
+                    <Route path='/dashboard/trade/sell' component={ Sell }/>
+                </Switch>
+                {/* { this.props.search.symbol ? <Link className='margin' to={{
+                        pathname:'/dashboard/search',
+                        stock:{ 
+                            stock: this.props.search.symbol
+                        }
+                    }}>More Info
+                </Link> : '' } */}
+            </div>
             </>
         )
     }
