@@ -5,18 +5,23 @@ class News extends React.Component {
     renderNews = news => {
         return news.map((article, index) => (
             <div key={ index } className="article">
-                <a href={article.url}><h4>{article.headline}</h4></a>
+                <a class='headline' href={article.url} target="_blank"><h4>{article.headline}</h4></a>
                 <p>{article.summary}</p>
+                <hr className='hrCenter' />
             </div>
         ))
     }
 
     render() {
         return(
-            <div id="news">
+            <>
+                <br />
                 <h2>{this.props.news.length > 0 ? 'News' : ''}</h2>
-                {this.props.news ? this.renderNews(this.props.news) : ''}
-            </div>
+                <div id="news">
+                    {/* <h2>{this.props.news.length > 0 ? 'News' : ''}</h2> */}
+                    {this.props.news ? this.renderNews(this.props.news) : ''}
+                </div>
+            </>
         )
     }
 }

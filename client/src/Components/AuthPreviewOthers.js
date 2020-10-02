@@ -12,26 +12,35 @@ class AuthPreviewOthers extends React.Component {
         return (number * 100).toFixed(2);
     }
 
-    // getRandomColor() {
-    //     var letters = '0123456789ABCDEF';
-    //     var color = '#';
-    //     for (var i = 0; i < 6; i++) {
-    //       color += letters[Math.floor(Math.random() * 16)];
-    //     }
-    //     return color;
-    // }
+    pieBackgroundColours = [
+        '#FF6384',
+        '#36A2EB',
+        '#FFCE56',
+        '#469B25',
+        '#807982',
+        '#27447D',
+        '#8C71D8',
+        '#BD5146',
+        '#557C24',
+        '#D6D7D3',
+        '#EE0997',
+        '#532742',
+        '#277D6F',
+        '#C4677C',
+        '#34C00D'
+    ]
 
     render() {
         return(
             <>
-            <h1>Preview Users' Portfolios</h1>
+            <h2 className='lefth2'>User Portfolios</h2>
             <div>{ this.props.comparison.map((user, index) => {
                 return (
                     <div key={ index }>
-                        <h2>User: { user.username }</h2>
+                        <h2 className='lefth2'>{ user.username }</h2>
                         <div className='user-breakdowns'>
                             <div> 
-                                <h3>Total Breakdown:</h3>
+                                <h3>Asset Class Breakdown</h3>
 
                                 <HorizontalBar 
                                     data={{
@@ -39,11 +48,11 @@ class AuthPreviewOthers extends React.Component {
                                         datasets: [
                                             {
                                             label: `${ user.username }'s Cash & Equity Allocation`,
-                                            backgroundColor: 'rgba(255,99,132,0.2)',
-                                            borderColor: 'rgba(255,99,132,1)',
+                                            backgroundColor: 'rgba(111, 179, 184, 1)',
+                                            borderColor: 'rgba(56, 128, 135, 1)',
                                             borderWidth: 0.5,
-                                            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                                            hoverBorderColor: 'rgba(255,99,132,1)',
+                                            hoverBackgroundColor: 'rgba(186, 223, 231, 1)',
+                                             hoverBorderColor: 'rgba(255,99,132,1)',
                                             data: [this.roundDP(user.total_breakdown.balance), this.roundDP(user.total_breakdown.stock)]
                                             }
                                         ]
@@ -79,22 +88,15 @@ class AuthPreviewOthers extends React.Component {
                                                 user.stock_breakdown.map(stock => {
                                                     return this.roundDP(stock.position);
                                                 }),
-                                            backgroundColor: [
-                                            '#FF6384',
-                                            '#36A2EB',
-                                            '#FFCE56'
-                                            ],
-                                            hoverBackgroundColor: [
-                                            '#FF6384',
-                                            '#36A2EB',
-                                            '#FFCE56'
-                                            ]
+                                            backgroundColor: this.pieBackgroundColours,
+                                            hoverBackgroundColor: this.pieBackgroundColours
                                         }]
                                     }}
                                 ></Pie>
+                                  
                             </div>
                         </div>
-                        {/* { console.log(this.getRandomColor()) } */}
+                        <hr className='hrCenter' />
                     </div>
                 )
                 })}</div>

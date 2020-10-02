@@ -56,7 +56,7 @@ export const registerUser = (details) => {
           .then((data) => {
             if (data.status == 200) {
               alert(`Welcome ${data.username}, please log in`);
-              window.location = "/login";
+              
             } else {
               alert(data);
             }
@@ -83,7 +83,7 @@ export const logIn = (details) => {
             if (data.token) {
               console.log(data.token);
               localStorage.setItem("user", data.token);
-              window.location = `/dashboard`;
+              window.location = `/`;
               dispatch(getPortfolio());
             } else {
               console.log(data);
@@ -145,7 +145,7 @@ export const newShare = (order) => {
           .then((r) => r.json())
           .then((data) => {
             alert(data);
-            window.location = "/dashboard";
+            window.location = "/";
           })
       );
     } catch (err) {
@@ -170,7 +170,7 @@ export const updateShares = (order) => {
           .then((r) => r.json())
           .then((data) => {
             alert(data);
-            window.location = "/dashboard";
+            window.location = "/";
           })
       );
     } catch (err) {
@@ -195,7 +195,7 @@ export const sellShare = (order) => {
           .then((r) => r.json())
           .then((data) => {
             alert(data);
-            window.location = "/dashboard";
+            window.location = "/";
           })
       );
     } catch (err) {
