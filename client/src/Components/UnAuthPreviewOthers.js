@@ -10,27 +10,29 @@ class UnauthPreviewOthers extends React.Component {
         this.props.getComparison()
     }
 
-    roundDP(number, decimalPlaces) {
-        return (number * 100).toFixed(decimalPlaces);
+    roundDP(number) {
+        return (number * 100).toFixed(2);
     }
 
     render() {
         return(
             <>
             <nav>
-                <NavLink to='/'>3X</NavLink>
-                <NavLink to='/login'>Log In</NavLink>
-                <NavLink to='/signup'>Sign Up</NavLink>
+                <NavLink class='threeX' to='/'>3X</NavLink>
+                <NavLink to='/login'>
+                    <button className='buttons'>Log In</button>
+                </NavLink>
+                <NavLink to='/signup'>
+                    <button className='buttons'>Register</button>
+                </NavLink>
             </nav>
-            <h1>Preview Users' Portfolios</h1>
+            <h2>Preview Users' Portfolios</h2>
 
             <div>{ this.props.comparison.map((user, index) => {
                 return (
                     <div key={ index }>
-                        <h2>User { index + 1 }</h2>
-                        <h3>Total Breakdown:</h3>
-                        {/* <p>Balance: { this.roundDP(user.balance, 2) }%</p>
-                        <p>Stock: { this.roundDP(user.stock, 2) }%</p> */}
+                        <h3>User { index + 1 }'s Breakdown</h3>
+                        {/* <h4>Total Breakdown:</h4> */}
 
                         <HorizontalBar 
                             data={{
@@ -38,12 +40,12 @@ class UnauthPreviewOthers extends React.Component {
                                 datasets: [
                                     {
                                     label: `User ${ index + 1 }'s Cash & Equity Allocation`,
-                                    backgroundColor: 'rgba(255,99,132,0.2)',
-                                    borderColor: 'rgba(255,99,132,1)',
+                                    backgroundColor: 'rgba(111, 179, 184, 1)',
+                                    borderColor: 'rgba(56, 128, 135, 1)',
                                     borderWidth: 0.5,
-                                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                                    hoverBorderColor: 'rgba(255,99,132,1)',
-                                    data: [this.roundDP(user.balance, 2), this.roundDP(user.stock, 2), 0]
+                                    hoverBackgroundColor: 'rgba(186, 223, 231, 1)',
+                                    hoverBorderColor: 'rgba(56, 128, 135, 1)',
+                                    data: [this.roundDP(user.balance), this.roundDP(user.stock), 0]
                                     }
                                 ]
                             }} 
@@ -51,7 +53,10 @@ class UnauthPreviewOthers extends React.Component {
                             height={ 20 } 
                             options={{ maintainAspectRatio: false }}>
                         </HorizontalBar>
-                
+                        <p>.</p>
+                        <div className='centre'>
+                            <hr />
+                        </div>
                     </div>
                 )
             }) }</div>

@@ -25,10 +25,10 @@ class Portfolio extends React.Component {
         return (
             <>
                 <div id='portfolio'>
-                    <h2>Portfolio</h2>
+                    <h2 className='lefth2'>Portfolio</h2>
                     { this.props.portfolio  ? this.renderStocks(this.props.portfolio) : 'There are no stocks' }
                 </div>
-                <button id="reset" onClick={this.confirmReset}>Reset Portfolio</button>
+                <button className='buttons' onClick={this.confirmReset}>Reset Portfolio</button>
                 
             </>
         )

@@ -17,8 +17,8 @@ class Dashboard extends React.Component {
     render() {
         return (
             <>
-                <nav>
-                    <NavLink to='/dashboard'>Portfolio</NavLink>
+                <nav className='spaceBetween'>
+                    <NavLink to='/dashboard'>Dashboard</NavLink>
                     <NavLink to='/dashboard/search'>Search</NavLink>
                     <NavLink to='/dashboard/trade'>Trade</NavLink>
                     <NavLink to='/dashboard/tradehistory'>History</NavLink>
@@ -27,8 +27,12 @@ class Dashboard extends React.Component {
                 </nav>
                 <main>
                     <div id='user-info'>
-                        <h1>{ this.props.username }</h1>
-                        <h2>Cash: ${ this.props.cash } Equity: ${ this.props.equity } Balance: ${ this.props.balance }</h2>
+                        <h2>{ this.props.username }'s Dashboard</h2>
+                        <div className='centerRow'>
+                            <h3>Cash: ${ this.props.cash }</h3>
+                            <h3>Equity: ${ this.props.equity }</h3>
+                            <h3>Balance: ${ this.props.balance }</h3>
+                        </div>
                     </div>
                     <Switch>
                         <Route exact path='/dashboard' component={ Portfolio } />

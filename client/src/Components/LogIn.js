@@ -28,34 +28,36 @@ class LogIn extends React.Component {
         }
 
         return (
-            <>
+            <section class='wholeSection'>
                 <nav>
-                    <NavLink to='/'>3X</NavLink>
-                    <NavLink to='/'>Sign Up</NavLink>
+                    <NavLink className='threeX' to='/'>3X</NavLink>
                 </nav>
-                <main>
-                    <h2>Login</h2>
-                    <form id="login-form" onSubmit={this.handleSubmit}>
+                <main className='loginCentre' class='centre'>
+                    <h2 className='loginRegisterH2'>Login</h2>
+                    <form onSubmit={this.handleSubmit}>
                         <label htmlFor='username'>Username</label>
                         <input required type='text' name="username" onChange={this.handleInput} autoFocus></input>
                         <label htmlFor='password'>Password</label>
                         <input required type='password' name="password" onChange={this.handleInput}></input>
-                        <input type='submit' value='Log In'></input>
-                        <Link to='/signup'>
-                            Don't already have an account yet?
-                        </Link>
+                        <div className='centre'>
+                            <input className='buttons' type='submit' value='Log In'></input>
+                            <Link class='classicLink' to='/signup'>
+                                Don't already have an account yet?
+                            </Link>
+                        </div>
                     </form>
-                    
                 </main>
-                <footer className='landing-footer'>
-                    <Link to='/unauthpreviewothers'>
-                        <button>See other users' portfolios</button>
-                    </Link>
-                </footer>
-                
-
-                
-            </>
+                <div>
+                    <NavLink className='nav' to='/signup'>
+                        <button className='buttons'>Register</button>
+                    </NavLink>
+                    <footer className='end'>
+                        <Link to='/unauthpreviewothers'>
+                            <button className='buttons'>User Portfolios</button>
+                        </Link>
+                    </footer>
+                </div>  
+            </section>
         )
     }
 }

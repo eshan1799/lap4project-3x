@@ -10,7 +10,7 @@ class TradeHistory extends React.Component {
     render() {
         return(
             <>
-                <h1>Trade History</h1>
+                <h2 className='lefth2'>Trade History</h2>
                 {this.props.history.slice().reverse().map((trade, idx) => <IndividualHistory key={idx} trade={trade}/>)}
             </>
         )

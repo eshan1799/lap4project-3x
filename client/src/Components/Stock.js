@@ -15,6 +15,9 @@ class Stock extends React.Component {
                             }
                         }}>TRADE
                     </Link>
+                    <div class='center'>
+                        <hr id='centerLine'/>
+                    </div>
                 </div>
             </>
         )

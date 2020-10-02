@@ -1,49 +1,256 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
+@import url("https://use.typekit.net/orp4oxn.css");
+
+:root {
+  --bg-color: #F6F6F2;
+  --block-blue: #388087;
+  --lighter-blue: #6FB3B8;
+  --washed-out-blue: #BADFE7;
+  --green: #4CCB70;
+}
+
 * {
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-  /* border: 1px solid black; */
+  font-family: 'Montserrat', sans-serif;
+  margin: 0px;
+  padding: 0px;
 }
 
 body {
   height: 100vh;
+  background-color: var(--bg-color);
 }
 
 #root {
   height: 100vh;
+  margin: 0px;
+  padding: 0px;
 }
 
-.App {
+/* .App {
   height: 100vh;
   display: grid;
   grid-template-rows: 50px 1fr 100px;
-}
+} */
 
-nav {
+.wholeSection {
+  height: 100vh;
+  width: 100vw;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  height: 50px;
-  background-color: #388087;
 }
 
-#landing-main {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#marginTop65px { margin-top: 65px; }
+
+/* th {
+  border-right: 1px solid black;
+  padding: 0px 95px;
+  margin: 0px 10px;
+  height: 0%;
+  text-align: center;
+} */
+
+#loginCentre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 65px;
+  justify-content: center;
+}
+
+.loginRegisterH2 {
+  margin-bottom: 50px;
+  font-size: 30px;
+  margin-top: 110px;
+}
+
+#registerH2 {
+  margin-top: 30px;
+  margin-bottom: 45px;
+}
+
+#title {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-family: league-gothic, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 750%;
+  transition: opacity 1s ease;
+  color: var(--lighter-blue);
+}
+
+h1:hover { opacity: 60%; }
+
+h1:hover, p:hover { cursor: default; }
+.buttons:hover { cursor: pointer }
+.buttons:focus { outline: none }
+
+.landingHeaders {
+  padding: 0px 0px;
+  margin: 0px 0px;
+}
+
+#slogan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--block-blue);
+  align-self: flex-end;
+  margin-top: 30px;
+  font-size: 18px;
+}
+
+.end {
+  position: absolute;
+  bottom: 20px;
+}
+
+.buttons {
+  padding: 8px 45px;
+  background-color: var(--block-blue);
+  color: white;
+  border: 1px solid var(--block-blue);
+  margin: 30px 30px;
+  font-size: 100%;
+  border-radius: 5px;
+  transition: background-color .3s;
+}
+
+#flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* .landingPageButtons {
+  padding: 8px 45px;
+  background-color: var(--block-blue);
+  color: white;
+  border: 1px solid var(--block-blue);
+  margin: 30px 15px;
+  font-size: 100%;
+  border-radius: 5px;
+  transition: background-color .3s;
+} */
+
+.buttons:hover {
+  background-color: var(--lighter-blue);
+  border: 1px solid var(--block-blue);
+  color: var(--block-blue);
+}
+
+.threeX {
+  font-size: 50px;
+  color: var(--lighter-blue);
+  text-decoration: none;
+  padding: 10px 30px;
+}
+
+.threeX:hover {
+  opacity: 50%;
 }
 
 input {
-  width: 100%;
-  display: inline-block;
+  display: block;
+  background-color: var(--bg-color);
+  border: 1px solid var(--block-blue);
+  font-size: 16px;
+  height: 35px;
+  margin: 20px 20px;
+  padding: 10px 15px;
+  color: black;
+  border-radius: 2px;
 }
 
-#login-form {
-  margin: auto;
-  width: 400px;
+label {
+  font-size: 20px;
+  margin: 0px 15px;
 }
 
-.landing-footer {
+a {
+  color: var(--block-blue);
+  text-decoration: none;
+}
+
+.classicLink:hover { text-decoration: underline; }
+
+.spaceBetween {
   display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  /* background-color: #333; */
+}
+
+.spaceBetween a {
+  transition: opacity .3s;
+  display: block;
+  color: var(--block-blue);
+  text-align: center;
+  padding: 24px 20px;
+  text-decoration: none;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.spaceBetween a:hover {
+  opacity: 70%;
+}
+
+.centerRow {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 35px;
+}
+
+.lefth2 {
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 50px;
+}
+
+.padding {
+  margin: 40px 20px;
+}
+
+.dateh4 {
+  margin-bottom: 50px;
+}
+
+h3, h4, p, #portfolio a, #reset {
+  margin-left: 20px;
+}
+
+#portfolio h3, #portfolio p, #portfolio h4 {
+  margin-bottom: 12px;
+}
+
+hr {
+  width: 80%;
+  align-self: center;
+  margin: 50px 0px;
+  border: 2px solid black;
+}
+
+#centerLine {
+  align-self: center;
+  width: 50%;
 }
 
 #search-results {
