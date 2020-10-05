@@ -1,6 +1,6 @@
 [build]
     base = "client"
-    publish = "client/dist" # what folder to publish 
+    publish = "/dist" # what folder to publish 
     command = "npm run build" # how to trigger a build
     
 
