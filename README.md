@@ -21,6 +21,7 @@
         - Inside `.env`:
             - Add `DATABASE_URI = {Your DataBase Local SQLAlchemy URI}` (Check [these docs](https://docs.sqlalchemy.org/en/13/core/engines.html#postgresql) for more info)
             - Add `SECRET = {Any String (This is not suitable practise for production!)}`
+            - Add `TOKEN = {IEX Cloud Token}` (Sign up for IEX Cloud Token [here](https://iexcloud.io/))
         - Inside `/server/app.py` near line 23 change `ENV = 'prod'` to `ENV = 'dev'`
         - In the terminal `cd` into `\server` and run `pipenv install -r requirements.txt`
         - In the terminal `cd..` then `cd` into `\client` and run `npm install`
