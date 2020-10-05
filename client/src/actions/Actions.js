@@ -83,7 +83,7 @@ export const logIn = (details) => {
             if (data.token) {
               console.log(data.token);
               localStorage.setItem("user", data.token);
-              window.location = `/`;
+              window.location = `/login`;
               dispatch(getPortfolio());
             } else {
               console.log(data);
@@ -145,7 +145,7 @@ export const newShare = (order) => {
           .then((r) => r.json())
           .then((data) => {
             alert(data);
-            window.location = "/";
+            window.location = "/dashboard";
           })
       );
     } catch (err) {
@@ -170,7 +170,7 @@ export const updateShares = (order) => {
           .then((r) => r.json())
           .then((data) => {
             alert(data);
-            window.location = "/";
+            window.location = "/dashboard";
           })
       );
     } catch (err) {
@@ -195,7 +195,7 @@ export const sellShare = (order) => {
           .then((r) => r.json())
           .then((data) => {
             alert(data);
-            window.location = "/";
+            window.location = "/dashboard";
           })
       );
     } catch (err) {
