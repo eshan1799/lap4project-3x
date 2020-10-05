@@ -20,9 +20,9 @@ class TradeSearch extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <input required type='text' placeholder="TICKER" onChange={this.handleInput} maxLength="5"></input>
-                <input type='submit'/>
+            <form className='search' onSubmit={this.handleSubmit}>
+                <input required type='text' placeholder="TICKER" onChange={this.handleInput} maxLength="5" autoFocus></input>
+                <input className='buttons' type='submit' value='Search'></input>
             </form>
         )
     }
