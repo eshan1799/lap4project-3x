@@ -83,7 +83,7 @@ export const logIn = (details) => {
             if (data.token) {
               console.log(data.token);
               localStorage.setItem("user", data.token);
-              
+              window.location = `/dashboard`;
               dispatch(getPortfolio());
             } else {
               console.log(data);
