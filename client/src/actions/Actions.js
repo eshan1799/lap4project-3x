@@ -56,7 +56,7 @@ export const registerUser = (details) => {
           .then((data) => {
             if (data.status == 200) {
               alert(`Welcome ${data.username}, please log in`);
-              
+              window.location = `/login`;
             } else {
               alert(data);
             }
@@ -83,7 +83,7 @@ export const logIn = (details) => {
             if (data.token) {
               console.log(data.token);
               localStorage.setItem("user", data.token);
-              window.location = `/login`;
+              
               dispatch(getPortfolio());
             } else {
               console.log(data);
