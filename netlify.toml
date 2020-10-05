@@ -6,5 +6,5 @@
 
 [[redirects]]
     from = "/*" # redirect any path
-    to = "/client/public/index.html" # to this html page
+    to = "/public/index.html" # to this html page
     status = 200 # with this status
