@@ -47,9 +47,7 @@
     - When a user buys stock, then sells it all, on their breakdown pie chart an empty legend wil remain with no pie chart allocation attached
         
 - ### Deployed Version
-    - Occasionally Heroku server takes a few seconds to initally start
-    - Cannot navigate via the URL bar
-    - On registering, user isn't redirected to login page (ideal functionality)
+    - Heroku server takes 30s to initally start if it hasn't been used for a few hours
 
 ## Collaborators
 [@albieduffy](https://github.com/albieduffy), [@eshan1799](https://github.com/eshan1799), [@MugishaU](https://github.com/MugishaU)
