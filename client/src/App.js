@@ -9,11 +9,6 @@ class App extends React.Component {
     return (
       <div className="App">
         <Switch>
-          {/* <Route exact path='/' component={ LandingPage } />
-          <Route path='/login' component={ LogIn } />
-          <Route path='/signup' component={SignUp} />
-          <Route path='/unauthpreviewothers' component={UnauthPreviewOthers} /> */}
-
           <UnauthRoute exact path='/' component={LandingPage} />
           <UnauthRoute path='/login' component={LogIn} />
           <UnauthRoute path='/signup' component={SignUp} />

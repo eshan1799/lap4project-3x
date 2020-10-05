@@ -8,7 +8,7 @@ class Stock extends React.Component {
                 <div className='stock'>
                     <h3>{this.props.stock.name} </h3>
                     <p>{this.props.stock.shares} @ ${this.props.stock.price.toFixed(2)} for ${this.props.stock.position.toFixed(2)} </p>
-                    <Link class='hover' to={{
+                    <Link className='hover' to={{
                             pathname:'/dashboard/trade',
                             stock:{ 
                                 stock: this.props.stock.ticker

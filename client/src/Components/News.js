@@ -5,7 +5,7 @@ class News extends React.Component {
     renderNews = news => {
         return news.map((article, index) => (
             <div key={ index } className="article">
-                <a class='headline' href={article.url} target="_blank"><h4>{article.headline}</h4></a>
+                <a className='headline' href={article.url} target="_blank"><h4>{article.headline}</h4></a>
                 <p>{article.summary}</p>
                 <hr className='hrCenter' />
             </div>

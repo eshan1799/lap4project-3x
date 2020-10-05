@@ -5,7 +5,7 @@ class IndividualHistory extends React.Component {
     return (
       <>
       <div className='history-result'>
-        <h2 class='smallerh2'>
+        <h2 className='smallerh2'>
           {this.props.trade.action == "buy" ? "Buy:" : "Sell:"}{" "}
           {this.props.trade.ticker}
         </h2>
