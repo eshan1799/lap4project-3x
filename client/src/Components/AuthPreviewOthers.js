@@ -40,7 +40,7 @@ class AuthPreviewOthers extends React.Component {
                         <h2 className='lefth2'>{ user.username }</h2>
                         <div className='user-breakdowns'>
                             <div> 
-                                <h3>Asset Class Breakdown:</h3>
+                                <h3>Asset Class Breakdown</h3>
 
                                 <HorizontalBar 
                                     data={{
@@ -88,24 +88,15 @@ class AuthPreviewOthers extends React.Component {
                                                 user.stock_breakdown.map(stock => {
                                                     return this.roundDP(stock.position);
                                                 }),
-                                            backgroundColor: [
-                                            '#FF6384',
-                                            '#36A2EB',
-                                            '#FFCE56'
-                                            ],
-                                            hoverBackgroundColor: [
-                                            '#FF6384',
-                                            '#36A2EB',
-                                            '#FFCE56'
-                                            ]
+                                            backgroundColor: this.pieBackgroundColours,
+                                            hoverBackgroundColor: this.pieBackgroundColours
                                         }]
                                     }}
                                 ></Pie>
                                   
                             </div>
-<hr />
                         </div>
-                        {/* { console.log(this.getRandomColor()) } */}
+                        <hr className='hrCenter' />
                     </div>
                 )
                 })}</div>

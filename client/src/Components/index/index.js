@@ -1,7 +1,7 @@
 export { default as LandingPage } from '../LandingPage'
 export { default as LogIn } from '../LogIn';
 export { default as SignUp } from '../SignUp';
-export { default as UnauthPreviewOthers } from '../UnauthPreviewOthers';
+export { default as UnauthPreviewOthers } from '../UnAuthPreviewOthers';
 
 export { default as Portfolio } from '../Portfolio';
 export { default as Stock } from '../Stock';

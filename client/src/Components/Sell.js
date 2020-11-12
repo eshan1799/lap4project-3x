@@ -34,7 +34,7 @@ class Sell extends React.Component {
             <>
              <form onSubmit={this.handleSubmit}>
                  <input required type='number' max={this.props.portfolio.find(pos => pos['ticker'] == this.props.search.symbol) ? this.props.portfolio.find(pos => pos['ticker'] == this.props.search.symbol)['shares'] : 0} min="0.2" step="0.2" onChange={this.handleInput}></input>
-                 <input type='submit' value='SELL'/>
+                 <input className='buttons' type='submit' value='SELL'/>
              </form>
             </>
         )

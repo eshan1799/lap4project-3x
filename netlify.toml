@@ -1,6 +1,8 @@
 [build]
-    command = "npm run build" # how to trigger a build
+    base = "client"
     publish = "/dist" # what folder to publish 
+    command = "npm run build" # how to trigger a build
+    
 
 [[redirects]]
     from = "/*" # redirect any path
